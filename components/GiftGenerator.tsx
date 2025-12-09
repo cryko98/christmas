@@ -49,17 +49,18 @@ const GiftGenerator: React.FC = () => {
 
       <div className="max-w-5xl mx-auto w-full text-center">
         
-        <div className="glass-card p-12 md:p-20 relative overflow-visible min-h-[600px] flex flex-col items-center justify-center">
+        {/* Changed to glass-card-dark */}
+        <div className="glass-card-dark p-12 md:p-20 relative overflow-visible min-h-[600px] flex flex-col items-center justify-center border border-white/10">
           
           {/* Header Area */}
           <div className="mb-12 relative z-10">
-             <span className="inline-block py-1 px-3 border border-santa-red/30 rounded-full bg-red-50 text-santa-red text-[10px] font-bold tracking-[0.3em] uppercase mb-4">
+             <span className="inline-block py-1 px-3 border border-santa-red/30 rounded-full bg-red-900/30 text-santa-red text-[10px] font-bold tracking-[0.3em] uppercase mb-4 backdrop-blur-md">
                 Ho Ho ... Huh?
              </span>
-             <h2 className="text-4xl md:text-6xl font-serif text-gray-800 leading-tight">
+             <h2 className="text-4xl md:text-6xl font-serif text-white leading-tight drop-shadow-md">
                 Mystery <span className="text-santa-gold italic">Gift Box</span>
              </h2>
-             <p className="text-gray-500 mt-4 max-w-lg mx-auto">
+             <p className="text-gray-300 mt-4 max-w-lg mx-auto">
                 Click the box to reveal your absolutely useless but festive present.
              </p>
           </div>
@@ -85,7 +86,7 @@ const GiftGenerator: React.FC = () => {
                  
                  {/* Click Hint */}
                  <div className={`mt-8 transition-opacity duration-300 ${status === GeneratorStatus.LOADING ? 'opacity-0' : 'opacity-100'}`}>
-                    <span className="bg-santa-dark text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm shadow-lg group-hover:bg-santa-red transition-colors">
+                    <span className="bg-santa-red text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm shadow-lg group-hover:bg-red-600 transition-colors">
                         Click to Unwrap
                     </span>
                  </div>
@@ -131,7 +132,7 @@ const GiftGenerator: React.FC = () => {
                       <button 
                         type="button"
                         onClick={reset}
-                        className="bg-gray-900 text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-black transition-colors shadow-lg cursor-pointer"
+                        className="bg-black text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-gray-900 transition-colors shadow-lg cursor-pointer border border-white/20"
                       >
                         Open Another
                       </button>
@@ -150,7 +151,7 @@ const GiftGenerator: React.FC = () => {
              {status === GeneratorStatus.ERROR && (
                 <div className="text-center relative z-20">
                     <p className="text-santa-red text-xl mb-4">The elves dropped the present. Try again.</p>
-                    <button onClick={reset} className="underline text-gray-600 hover:text-gray-900">Reset</button>
+                    <button onClick={reset} className="underline text-gray-300 hover:text-white">Reset</button>
                 </div>
              )}
 

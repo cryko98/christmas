@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import SectionDivider from './SectionDivider';
 
 // --- TYPES ---
 type ToolType = 'BRUSH' | 'ERASER' | 'STICKER';
@@ -337,21 +336,22 @@ const TreeDecorator: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-6 items-start justify-center">
           
           {/* TOOLBOX PANEL */}
-          <div className="glass-card p-6 w-full lg:w-80 flex flex-col gap-6 order-2 lg:order-1 h-full shadow-2xl">
+          {/* Changed to glass-card-dark */}
+          <div className="glass-card-dark p-6 w-full lg:w-80 flex flex-col gap-6 order-2 lg:order-1 h-full shadow-2xl border border-white/10">
              
              {/* Main Tool Toggle */}
              <div>
-                <label className="text-santa-dark font-bold text-xs uppercase tracking-widest mb-3 block">Mode</label>
-                <div className="flex bg-gray-100 rounded-lg p-1 border border-gray-200 shadow-inner">
+                <label className="text-santa-gold font-bold text-xs uppercase tracking-widest mb-3 block">Mode</label>
+                <div className="flex bg-black/40 rounded-lg p-1 border border-white/10 shadow-inner">
                     <button 
                         onClick={() => setActiveTool('BRUSH')}
-                        className={`flex-1 py-3 rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-all ${activeTool === 'BRUSH' ? 'bg-white shadow-md text-santa-red transform scale-105' : 'text-gray-500 hover:text-gray-800'}`}
+                        className={`flex-1 py-3 rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-all ${activeTool === 'BRUSH' ? 'bg-santa-red shadow-md text-white transform scale-105' : 'text-gray-400 hover:text-white'}`}
                     >
                         <i className="fa-solid fa-paintbrush"></i> Paint
                     </button>
                     <button 
                         onClick={() => setActiveTool('STICKER')}
-                        className={`flex-1 py-3 rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-all ${activeTool === 'STICKER' ? 'bg-white shadow-md text-santa-red transform scale-105' : 'text-gray-500 hover:text-gray-800'}`}
+                        className={`flex-1 py-3 rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-all ${activeTool === 'STICKER' ? 'bg-santa-red shadow-md text-white transform scale-105' : 'text-gray-400 hover:text-white'}`}
                     >
                         <i className="fa-solid fa-icons"></i> Stickers
                     </button>
@@ -362,10 +362,10 @@ const TreeDecorator: React.FC = () => {
              {activeTool === 'BRUSH' || activeTool === 'ERASER' ? (
                  <>
                     {/* Brush Mode Controls */}
-                    <div className="bg-white/50 p-4 rounded-xl border border-white/40">
+                    <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                         <div className="flex justify-between items-center mb-2">
-                             <label className="text-santa-dark font-bold text-xs uppercase tracking-widest">Brush Size</label>
-                             <span className="text-xs text-gray-500 font-mono bg-white px-2 rounded border border-gray-200">{brushSize}px</span>
+                             <label className="text-santa-gold font-bold text-xs uppercase tracking-widest">Brush Size</label>
+                             <span className="text-xs text-white font-mono bg-black/30 px-2 rounded border border-white/10">{brushSize}px</span>
                         </div>
                         <input 
                             type="range" 
@@ -373,12 +373,12 @@ const TreeDecorator: React.FC = () => {
                             max="40" 
                             value={brushSize} 
                             onChange={(e) => setBrushSize(parseInt(e.target.value))}
-                            className="w-full accent-santa-red h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            className="w-full accent-santa-red h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                         />
                     </div>
 
                     <div>
-                        <label className="text-santa-dark font-bold text-xs uppercase tracking-widest mb-3 block">Color Palette</label>
+                        <label className="text-santa-gold font-bold text-xs uppercase tracking-widest mb-3 block">Color Palette</label>
                         <div className="grid grid-cols-5 gap-3">
                             {COLORS.map(color => (
                                 <button
@@ -387,7 +387,7 @@ const TreeDecorator: React.FC = () => {
                                         setBrushColor(color);
                                         setActiveTool('BRUSH'); 
                                     }}
-                                    className={`w-10 h-10 rounded-full shadow-md transition-all hover:scale-110 flex items-center justify-center ${brushColor === color && activeTool === 'BRUSH' ? 'ring-2 ring-offset-2 ring-santa-red scale-110' : 'ring-1 ring-black/5'}`}
+                                    className={`w-10 h-10 rounded-full shadow-md transition-all hover:scale-110 flex items-center justify-center ${brushColor === color && activeTool === 'BRUSH' ? 'ring-2 ring-offset-2 ring-santa-red scale-110' : 'ring-1 ring-white/10'}`}
                                     style={{ backgroundColor: color }}
                                 >
                                   {brushColor === color && activeTool === 'BRUSH' && <i className="fa-solid fa-check text-xs mix-blend-difference text-white"></i>}
@@ -396,7 +396,7 @@ const TreeDecorator: React.FC = () => {
                             {/* Eraser */}
                             <button
                                 onClick={() => setActiveTool('ERASER')}
-                                className={`w-10 h-10 rounded-full bg-gray-100 border-2 flex items-center justify-center text-gray-600 transition-all hover:scale-110 shadow-md ${activeTool === 'ERASER' ? 'border-santa-dark ring-2 ring-offset-2 ring-santa-red/30 bg-white' : 'border-gray-200'}`}
+                                className={`w-10 h-10 rounded-full bg-gray-700 border-2 flex items-center justify-center text-gray-300 transition-all hover:scale-110 shadow-md ${activeTool === 'ERASER' ? 'border-santa-dark ring-2 ring-offset-2 ring-santa-red/30 bg-gray-600' : 'border-gray-600'}`}
                                 title="Eraser"
                             >
                                 <i className="fa-solid fa-eraser"></i>
@@ -407,46 +407,46 @@ const TreeDecorator: React.FC = () => {
              ) : (
                  <>
                     {/* Sticker Mode Controls */}
-                    <div className="bg-white/50 p-4 rounded-xl border border-white/40">
-                        <label className="text-santa-dark font-bold text-xs uppercase tracking-widest mb-3 block">Sticker Size</label>
+                    <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <label className="text-santa-gold font-bold text-xs uppercase tracking-widest mb-3 block">Sticker Size</label>
                         <input 
                             type="range" 
                             min="2" 
                             max="12" 
                             value={brushSize} 
                             onChange={(e) => setBrushSize(parseInt(e.target.value))}
-                            className="w-full accent-santa-gold h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            className="w-full accent-santa-gold h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                         />
                     </div>
                     <div>
-                        <label className="text-santa-dark font-bold text-xs uppercase tracking-widest mb-3 block">Decorations</label>
+                        <label className="text-santa-gold font-bold text-xs uppercase tracking-widest mb-3 block">Decorations</label>
                         <div className="grid grid-cols-5 gap-2 max-h-[280px] overflow-y-auto custom-scrollbar p-1">
                             {STICKERS.map(emoji => (
                                 <button
                                     key={emoji}
                                     onClick={() => setSelectedSticker(emoji)}
-                                    className={`aspect-square flex items-center justify-center text-2xl bg-white rounded-lg border shadow-sm hover:scale-110 transition-all ${selectedSticker === emoji ? 'border-santa-gold bg-yellow-50 ring-2 ring-santa-gold/50' : 'border-gray-200'}`}
+                                    className={`aspect-square flex items-center justify-center text-2xl bg-white/10 rounded-lg border shadow-sm hover:scale-110 transition-all ${selectedSticker === emoji ? 'border-santa-gold bg-santa-gold/20 ring-2 ring-santa-gold/50' : 'border-white/5'}`}
                                 >
                                     {emoji}
                                 </button>
                             ))}
                         </div>
-                        <p className="text-[10px] text-gray-500 mt-2 text-center bg-white/50 py-1 rounded">Click on tree to place</p>
+                        <p className="text-[10px] text-gray-400 mt-2 text-center bg-black/30 py-1 rounded">Click on tree to place</p>
                     </div>
                  </>
              )}
 
              {/* Actions */}
-             <div className="mt-auto pt-6 border-t border-gray-200 grid grid-cols-2 gap-3">
+             <div className="mt-auto pt-6 border-t border-white/10 grid grid-cols-2 gap-3">
                  <button 
                     onClick={handleUndo}
-                    className="py-3 px-4 rounded-xl bg-gray-800 text-white font-bold text-xs uppercase hover:bg-gray-900 transition-all shadow-lg active:scale-95"
+                    className="py-3 px-4 rounded-xl bg-black/50 text-white font-bold text-xs uppercase hover:bg-black transition-all shadow-lg active:scale-95 border border-white/10"
                  >
                     <i className="fa-solid fa-rotate-left mr-2"></i> Undo
                  </button>
                  <button 
                     onClick={handleClear}
-                    className="py-3 px-4 rounded-xl bg-red-100 text-santa-red font-bold text-xs uppercase hover:bg-red-200 transition-all shadow-lg active:scale-95"
+                    className="py-3 px-4 rounded-xl bg-red-900/50 text-red-200 font-bold text-xs uppercase hover:bg-red-900/80 transition-all shadow-lg active:scale-95 border border-red-800/50"
                  >
                     <i className="fa-solid fa-trash mr-2"></i> Clear
                  </button>

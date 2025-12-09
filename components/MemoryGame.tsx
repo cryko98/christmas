@@ -151,26 +151,26 @@ const MemoryGame: React.FC = () => {
           <p className="text-white/60 mt-2">Find the matching presents before the snow melts!</p>
         </div>
 
-        {/* Game Container */}
-        <div className="glass-card p-6 md:p-8 relative">
+        {/* Game Container - Changed to glass-card-dark */}
+        <div className="glass-card-dark p-6 md:p-8 relative border border-white/10">
           
           {/* Stats Bar */}
-          <div className="flex justify-between items-center mb-8 bg-gray-100/80 p-4 rounded-xl shadow-inner border border-white">
+          <div className="flex justify-between items-center mb-8 bg-black/40 p-4 rounded-xl shadow-inner border border-white/10">
              <div className="flex items-center gap-4">
                 <div className="text-center">
-                   <p className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Time</p>
-                   <p className="text-2xl font-mono font-bold text-santa-dark">{formatTime(timer)}</p>
+                   <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Time</p>
+                   <p className="text-2xl font-mono font-bold text-santa-gold">{formatTime(timer)}</p>
                 </div>
-                <div className="w-[1px] h-8 bg-gray-300"></div>
+                <div className="w-[1px] h-8 bg-white/20"></div>
                 <div className="text-center">
-                   <p className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Moves</p>
-                   <p className="text-2xl font-mono font-bold text-santa-dark">{moves}</p>
+                   <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Moves</p>
+                   <p className="text-2xl font-mono font-bold text-santa-gold">{moves}</p>
                 </div>
              </div>
 
              <button 
                onClick={initializeGame}
-               className="bg-santa-dark text-white px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-santa-red transition-colors shadow-lg flex items-center gap-2"
+               className="bg-santa-red text-white px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg flex items-center gap-2"
              >
                <i className="fa-solid fa-rotate-right"></i>
                <span className="hidden sm:inline">Restart</span>
@@ -191,7 +191,7 @@ const MemoryGame: React.FC = () => {
                    <div className={`relative w-full h-full duration-500 transform-style-3d transition-transform ${card.isFlipped ? 'rotate-y-180' : ''}`}>
                       
                       {/* CARD BACK (Face Down) */}
-                      <div className="absolute w-full h-full bg-santa-red rounded-xl shadow-md backface-hidden flex items-center justify-center border-2 border-white/20 group-hover:border-santa-gold/50 transition-colors">
+                      <div className="absolute w-full h-full bg-santa-dark rounded-xl shadow-md backface-hidden flex items-center justify-center border-2 border-white/20 group-hover:border-santa-gold/50 transition-colors">
                           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 2px, transparent 2px)', backgroundSize: '10px 10px' }}></div>
                           <span className="text-3xl text-white/40"><i className="fa-solid fa-snowflake"></i></span>
                       </div>

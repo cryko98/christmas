@@ -49,8 +49,8 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-8">
+          <div className="hidden md:flex items-center gap-6">
+            <div className="flex items-center space-x-6">
               <NavLink onClick={() => scrollToSection('countdown')} label="Countdown" />
               <NavLink onClick={() => scrollToSection('about')} label="Story" />
               <NavLink onClick={() => scrollToSection('decorator')} label="Decorate" />
@@ -60,10 +60,30 @@ const Navbar: React.FC = () => {
               <NavLink onClick={() => scrollToSection('santafy')} label="Santafy" />
               <NavLink onClick={() => scrollToSection('gallery')} label="Gallery" />
             </div>
+
+            {/* X.com Logo in Header */}
+            <a 
+                href="https://x.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="ml-4 w-9 h-9 rounded-full bg-black flex items-center justify-center border border-white/20 hover:border-santa-gold transition-colors hover:scale-110 shadow-lg"
+                title="Follow on X"
+            >
+                <i className="fa-brands fa-x-twitter text-white text-sm"></i>
+            </a>
           </div>
 
           {/* Actions - Mobile Menu Button */}
           <div className="flex items-center gap-4 md:hidden relative z-[101]">
+            <a 
+                href="https://x.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-8 h-8 rounded-full bg-black flex items-center justify-center border border-white/20"
+            >
+                <i className="fa-brands fa-x-twitter text-white text-xs"></i>
+            </a>
+
             <button 
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
                 className="text-white text-2xl p-2 focus:outline-none active:scale-95 transition-transform"
@@ -97,7 +117,7 @@ const Navbar: React.FC = () => {
 const NavLink: React.FC<{ onClick: () => void; label: string }> = ({ onClick, label }) => (
   <button 
     onClick={onClick} 
-    className="text-white/80 hover:text-santa-gold font-medium text-sm tracking-widest uppercase transition-colors relative group"
+    className="text-white/80 hover:text-santa-gold font-medium text-xs lg:text-sm tracking-widest uppercase transition-colors relative group"
   >
     {label}
     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-santa-gold transition-all duration-300 group-hover:w-full"></span>

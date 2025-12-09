@@ -10,6 +10,7 @@ import ReindeerGame from './components/ReindeerGame';
 import TreeDecorator from './components/TreeDecorator';
 import MemoryGame from './components/MemoryGame';
 import SantaChat from './components/SantaChat';
+import CozyFireplace from './components/CozyFireplace';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -66,25 +67,52 @@ const App: React.FC = () => {
     }
   };
 
-  // Generate subtle falling snow
+  // Generate HEAVY falling snow
   const snowflakes = useMemo(() => {
-    return Array.from({ length: 75 }).map((_, i) => ({
+    // Increased from 75 to 150 for more cheer
+    return Array.from({ length: 150 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
-      animationDuration: `${Math.random() * 10 + 10}s`, // Slower, more elegant fall
-      animationDelay: `-${Math.random() * 20}s`,
-      opacity: Math.random() * 0.6 + 0.2,
-      size: `${Math.random() * 4 + 3}px`
+      animationDuration: `${Math.random() * 8 + 5}s`, // Varied speed
+      animationDelay: `-${Math.random() * 10}s`,
+      opacity: Math.random() * 0.7 + 0.3,
+      size: `${Math.random() * 6 + 2}px` // varied sizes
     }));
   }, []);
 
   return (
-    <div className="min-h-screen font-sans text-white relative">
+    <div className="min-h-screen font-sans text-white relative overflow-x-hidden">
       
       {/* Background Pattern */}
       <div className="bg-pattern"></div>
 
-      {/* Elegant Snow */}
+      {/* Global Christmas Lights Decoration (Fixed Top) */}
+      <div className="fixed top-0 left-0 w-full z-[60] pointer-events-none h-12 hidden md:block">
+         <div className="w-full h-full flex justify-between px-2">
+            {Array.from({ length: 30 }).map((_, i) => {
+                 const colors = ['#ff0000', '#00ff00', '#ffd700', '#0000ff'];
+                 const color = colors[i % colors.length];
+                 return (
+                   <div key={i} className="relative flex flex-col items-center" style={{ width: '3.33%' }}>
+                      {/* Wire */}
+                      <div className="w-full h-6 border-b-2 border-gray-800 rounded-[50%] absolute -top-4"></div>
+                      {/* Bulb */}
+                      <div 
+                        className="w-3 h-4 rounded-full mt-2 animate-pulse"
+                        style={{ 
+                            backgroundColor: color, 
+                            boxShadow: `0 0 10px ${color}`,
+                            animationDuration: `${Math.random() * 1 + 1}s`,
+                            animationDelay: `${Math.random() * 2}s`
+                        }}
+                      ></div>
+                   </div>
+                 )
+            })}
+         </div>
+      </div>
+
+      {/* Heavy Snow */}
       <div className="snow-container">
         {snowflakes.map((flake) => (
           <div
@@ -107,6 +135,10 @@ const App: React.FC = () => {
       
       <main className="relative z-10 flex flex-col gap-24 pb-32">
         <Hero />
+        
+        {/* Insert Cozy Fireplace Here */}
+        <CozyFireplace />
+
         <About />
         <TreeDecorator />
         <ReindeerGame />

@@ -1,41 +1,52 @@
 import React from 'react';
 
 const SectionDivider: React.FC = () => {
-  // Embedded SVG for a realistic-looking stylized pine branch to ensure it ALWAYS loads
-  const pineBranchSVG = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMjUwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYnJhbmNoR3JhZCIgeDE9IjAlIiB5MT0iNTAlIiB4Mj0iMTAwJSIgeTI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM1RDQwMzc7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzNFMjcyMztzdG9wLW9wYWNpdHk6MSIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDwhLS0gTWFpbiBCcmFuY2ggLS0+CiAgPHBhdGggZD0iTSAwLDEyNSBDIDE1MCwxMjUgMzAwLDEwMCA1MDAsNTAiIHN0cm9rZT0idXJsKCNicmFuY2hHcmFkKSIgc3Ryb2tlLXdpZHRoPSI4IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+CiAgCiAgPCEtLSBOZWVkbGVzIChHcm91cHMpIC0tPgogIDxnIHN0cm9rZT0iIzFCNTMyNCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPCEtLSBUb3AgU2lkZSAtLT4KICAgIDxsaW5lIHgxPSI1MCIgeTE9IjEyNSIgeDI9IjgwIiB5Mj0iODAiIC8+CiAgICA8bGluZSB4MT0iOTAiIHkxPSIxMjAiIHgyPSIxMjAiIHkyPSI3MCIgLz4KICAgIDxsaW5lIHgxPSIxMzAiIHkxPSIxMTUiIHgyPSIxNjAiIHkyPSI2NSIgLz4KICAgIDxsaW5lIHgxPSIxNzAiIHkxPSIxMTAiIHgyPSIyMDAiIHkyPSI1NSIgLz4KICAgIDxsaW5lIHgxPSIyMTAiIHkxPSIxMDUiIHgyPSIyNDAiIHkyPSI1MCIgLz4KICAgIDxsaW5lIHgxPSIyNTAiIHkxPSIxMDAiIHgyPSIyODAiIHkyPSI0NSIgLz4KICAgIDxsaW5lIHgxPSIyOTAiIHkxPSI5NSIgeDI9IjMyMCIgeTI9IjQwIiAvPgogICAgPGxpbmUgeDE9IjMzMCIgeTE9IjkwIiB4Mj0iMzYwIiB5Mj0iMzUiIC8+CiAgICA8bGluZSB4MT0iMzcwIiB5MT0iODUiIHgyPSI0MDAiIHkyPSIzMCIgLz4KICAgIDxsaW5lIHgxPSI0MTAiIHkxPSI4MCIgeDI9IjQ0MCIgeTI9IjI1IiAvPgogICAgCiAgICA8IS0tIEJvdHRvbSBTaWRlIC0tPgogICAgPGxpbmUgeDE9IjYwIiB5MT0iMTI1IiB4DI9IjkwIiB5Mj0iMTcwIiAvPgogICAgPGxpbmUgeDE9IjEwMCIgeTE9IjEyMCIgeDI9IjEzMCIgeTI9IjE2NSIgLz4KICAgIDxsaW5lIHgxPSIxNDAiIHkxPSIxMTUiIHgyPSIxNzAiIHkyPSIxNjAiIC8+CiAgICA8bGluZSB4MT0iMTgwIiB5MT0iMTEwIiB4Mj0iMjEwIiB5Mj0iMTU1IiAvPgogICAgPGxpbmUgeDE9IjIyMCIgeTE9IjEwNSIgeDI9IjI1MCIgeTI9IjE1MCIgLz4KICAgIDxsaW5lIHgxPSIyNjAiIHkxPSIxMDAiIHgyPSIyOTAiIHkyPSIxNDUiIC8+CiAgICA8bGluZSB4MT0iMzAwIiB5MT0iOTUiIHgyPSIzMzAiIHkyPSIxNDAiIC8+CiAgICA8bGluZSB4MT0iMzQwIiB5MT0iOTAiIHgyPSIzNzAiIHkyPSIxMzUiIC8+CiAgICA8bGluZSB4MT0iMzgwIiB5MT0iODUiIHgyPSI0MTAiIHkyPSIxMzAiIC8+CiAgICA8bGluZSB4MT0iNDIwIiB5MT0iODAiIHgyPSI0NTAiIHkyPSIxMjUiIC8+CiAgPC9nPgo8L3N2Zz4=`;
+  // Rich Festive SVG: Pine, Holly, Berries, Candy Cane
+  // Using Base64 to ensure it loads immediately without external requests
+  const festiveDecorationSVG = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMzAwIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdyIgeD0iLTIwJSIgeT0iLTIwJSIgd2lkdGg9IjE0MCUiIGhlaWdodD0iMTQwJSI+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9IjIiIGR5PSI0IiBzdGREZXZpYXRpb249IjMiIGZsb29kLW9wYWNpdHk9IjAuMyIvPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxnIGZpbHRlcj0idXJsKCNzaGFkb3cpIj4KICAgIDwhLS0gUGluZSBCcmFuY2ggLS0+CiAgICA8cGF0aCBkPSJNLTUwLDMwMCBRMTUwLDI1MCAzNTAsMTAwIiBzdHJva2U9IiMzRTI3MjMiIHN0cm9rZS13aWR0aD0iOCIgZmlsbD0ibm9uZSIvPgogICAgPGcgc3Ryb2tlPSIjMUI1RTIwIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CiAgICAgICA8cGF0aCBkPSJMMCwyODAgbDMwLC00MCBNMjAsMjc1IGwzMCwtNDAgTTQwLDI3MCBsMzAsLTQwIE02MCwyNjUgbDMwLC00MCBNODAsMjYwIGwzMCwtNDAgTTEwMCwyNTUgbDMwLC00MCBNMTIwLDI1MCBsMzAsLTQwIE0xNDAsMjQ1IGwzMCwtNDAgTTE2MCwyNDAgbDMwLC00MCBNMTgwLDIzNSBsMzAsLTQwIiAvPgogICAgICAgPHBhdGggZD0iTTEwLDI5MCBsNDAsMTAgTTMwLDI4NSBsNDAsMTAgTTUwLDI4MCBsNDAsMTAgTTcwLDI3NSBsNDAsMTAgTTkwLDI3MCBsNDAsMTAgTTExMCwyNjUgbDQwLDEwIE0xMzAsMjYwIGw0MCwxMCBNMTUwLDI1NSBsNDAsMTAiIC8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gQ2FuZHkgQ2FuZSAtLT4KICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE4MCwgMTMwKSByb3RhdGUoMTUpIj4KICAgICAgPHBhdGggZD0iTTAsMCBMMCwxMDAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz4KICAgICAgPHBhdGggZD0iTTAsMCBBMjUsMjUgMCAxIDEgNTAsMCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIiAvPgogICAgICA8cGF0aCBkPSJNMCwwIEwwLDEwMCIgc3Ryb2tlPSIjRDMyRjJGIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtZGFzaGFycmF5PSIxMiwxMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIwLjkiIGZpbGw9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTTAsMCBBMjUsMjUgMCAxIDEgNTAsMCIgc3Ryb2tlPSIjRDMyRjJGIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtZGFzaGFycmF5PSIxMiwxMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIiBvcGFjaXR5PSIwLjkiIC8+CiAgICA8L2c+CgogICAgPCEtLSBIb2xseSBMZWF2ZXMgLS0+CiAgICA8cGF0aCBkPSJNODAsMjIwIEM2MCwyMDAgMTIwLDE1MCAxNDAsMjAwIEMxNjAsMjUwIDEwMCwyODAgODAsMjIwIFoiIGZpbGw9IiMyRTdEMzIiIHN0cm9rZT0iIzFCNUUyMCIvPgogICAgPHBhdGggZD0iTTEyMCwyMjAgQzEwMCwyMDAgMTYwLDE1MCAxODAsMjAwIEMyMDAsMjUwIDE0MCwyODAgMTIwLDIyMCBaIiBmaWxsPSIjMzg4RTNDIiBzdHJva2U9IiMxQjVFMjAiLz4KICAgIAogICAgPCEtLSBCZXJyaWVzIC0tPgogICAgPGNpcmNsZSBjeD0iMTMwIiBjeT0iMjMwIiByPSIxMCIgZmlsbD0iI0QzMkYyRiIgLz4KICAgIDxjaXJjbGUgY3g9IjE0NSIgY3k9IjIyMCIgcj0iMTAiIGZpbGw9IiNDNjI4MjgiIC8+CiAgICA8Y2lyY2xlIGN4PSIxNTAiIGN5PSIyNDAiIHI9IjEwIiBmaWxsPSIjQjcxQzFDIiAvPgogICAgPGNpcmNsZSBjeD0iMTM1IiBjeT0iMjI1IiByPSIzIiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC40Ii8+CiAgPC9nPgo8L3N2Zz4=`;
 
   return (
-    <div className="relative w-full h-40 pointer-events-none z-30 overflow-visible -my-20">
+    <div className="relative w-full h-40 pointer-events-none z-40 overflow-visible -my-20">
        
-       {/* Snow Mound - Made brighter and simpler to ensure visibility */}
-       <div className="absolute bottom-0 left-0 w-full h-32 scale-y-110" 
+       {/* Snow Mound Layer 1 (Softer Glow) */}
+       <div className="absolute bottom-0 left-0 w-full h-32" 
             style={{
-                background: 'radial-gradient(50% 100% at 50% 100%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 40%, transparent 80%)',
+                background: 'radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 40%, transparent 70%)',
+                filter: 'blur(10px)',
+                transform: 'translateY(10px)'
+            }}>
+       </div>
+
+       {/* Snow Mound Layer 2 (Stronger Ground) */}
+       <div className="absolute bottom-0 left-0 w-full h-20" 
+            style={{
+                background: 'linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 50%, transparent 100%)',
                 filter: 'blur(2px)'
             }}>
        </div>
        
-       {/* Left Pine Branch - Using Base64 Data URI */}
-       <div className="absolute bottom-[-20px] left-[-50px] md:left-[-20px] w-64 h-64 transform -rotate-12 origin-bottom-left drop-shadow-2xl opacity-100 animate-sway-slow">
+       {/* Left Festive Corner: Pine + Holly + Candy Cane */}
+       <div className="absolute bottom-[-10px] left-[-30px] md:left-[-10px] w-[280px] h-[200px] transform origin-bottom-left animate-sway-slow opacity-100 z-50">
            <img 
-             src={pineBranchSVG} 
-             alt="Pine Decoration" 
-             className="w-full h-full object-contain filter drop-shadow-lg"
+             src={festiveDecorationSVG} 
+             alt="Holly and Pine Decoration" 
+             className="w-full h-full object-contain filter drop-shadow-xl"
            />
        </div>
 
-       {/* Right Pine Branch - Using Base64 Data URI (Mirrored) */}
-       <div className="absolute bottom-[-20px] right-[-50px] md:right-[-20px] w-64 h-64 transform scale-x-[-1] rotate-12 origin-bottom-right drop-shadow-2xl opacity-100 animate-sway-slow-reverse">
+       {/* Right Festive Corner: Mirrored */}
+       <div className="absolute bottom-[-10px] right-[-30px] md:right-[-10px] w-[280px] h-[200px] transform scale-x-[-1] origin-bottom-right animate-sway-slow-reverse opacity-100 z-50">
            <img 
-             src={pineBranchSVG} 
-             alt="Pine Decoration" 
-             className="w-full h-full object-contain filter drop-shadow-lg"
+             src={festiveDecorationSVG} 
+             alt="Holly and Pine Decoration" 
+             className="w-full h-full object-contain filter drop-shadow-xl"
            />
        </div>
        
-       {/* Sparkles on the snow */}
-       <div className="absolute bottom-10 left-1/4 w-2 h-2 bg-white rounded-full animate-pulse blur-[1px]"></div>
-       <div className="absolute bottom-16 right-1/4 w-3 h-3 bg-white rounded-full animate-pulse delay-700 blur-[1px]"></div>
+       {/* Extra Sparkles */}
+       <div className="absolute bottom-8 left-[20%] w-1.5 h-1.5 bg-white rounded-full animate-pulse shadow-[0_0_10px_white]"></div>
+       <div className="absolute bottom-12 right-[20%] w-2 h-2 bg-white rounded-full animate-pulse delay-500 shadow-[0_0_10px_white]"></div>
+       <div className="absolute bottom-6 left-[50%] w-1 h-1 bg-white rounded-full animate-pulse delay-1000"></div>
     </div>
   );
 };

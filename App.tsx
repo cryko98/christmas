@@ -11,6 +11,7 @@ import TreeDecorator from './components/TreeDecorator';
 import MemoryGame from './components/MemoryGame';
 import SantaChat from './components/SantaChat';
 import CozyFireplace from './components/CozyFireplace';
+import BackgroundMusic from './components/BackgroundMusic';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -166,10 +167,11 @@ const App: React.FC = () => {
         <Footer />
       </div>
       
-      {/* Floating Elements - z-50 */}
+      {/* Floating Elements - z-50 & z-100 */}
       <div className="relative z-50">
         <SantaChat />
       </div>
+      <BackgroundMusic />
     </div>
   );
 };

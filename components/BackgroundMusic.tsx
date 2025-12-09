@@ -5,14 +5,15 @@ const BackgroundMusic: React.FC = () => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Classic Upbeat Jingle Bells (Royalty Free)
-  const AUDIO_URL = "https://cdn.pixabay.com/audio/2022/10/28/audio_924ebf5012.mp3"; 
+  // Premium Jazz/Swing Style Jingle Bells (Similar to Artlist vibe)
+  // Source: Pixabay Royalty Free - "Jingle Bells Jazz"
+  const AUDIO_URL = "https://cdn.pixabay.com/audio/2022/11/21/audio_4b525828f9.mp3"; 
 
   useEffect(() => {
     // Create audio object
     const audio = new Audio(AUDIO_URL);
     audio.loop = true;
-    audio.volume = 0.5; // Set volume to 50%
+    audio.volume = 0.6; // Slightly louder for jazz vibe
     audioRef.current = audio;
 
     // Browser Autoplay Policy: We need a user interaction first.
@@ -66,16 +67,16 @@ const BackgroundMusic: React.FC = () => {
             flex items-center justify-center transition-all duration-300 transform active:scale-95
             border-2 border-white/20 cursor-pointer pointer-events-auto
             ${isPlaying 
-                ? 'bg-gradient-to-br from-green-600 to-green-800 animate-pulse-slow scale-110' 
+                ? 'bg-gradient-to-br from-santa-gold to-yellow-600 animate-pulse-slow scale-110 border-white/50' 
                 : 'bg-gradient-to-br from-gray-700 to-gray-900 hover:scale-105'}
         `}
         aria-label={isPlaying ? "Mute Music" : "Play Music"}
-        title={isPlaying ? "Mute Jingle Bells" : "Play Jingle Bells"}
+        title={isPlaying ? "Mute Holiday Jazz" : "Play Holiday Jazz"}
         style={{ touchAction: 'manipulation' }}
       >
         {/* Glow Ring when playing */}
         {isPlaying && (
-            <span className="absolute inset-0 rounded-full border border-green-400/50 animate-ping opacity-40"></span>
+            <span className="absolute inset-0 rounded-full border border-santa-gold/50 animate-ping opacity-40"></span>
         )}
         
         {/* Icon */}
@@ -86,9 +87,9 @@ const BackgroundMusic: React.FC = () => {
       {!isPlaying && (
         <span 
           onClick={toggleMusic}
-          className="text-[10px] font-bold text-white/90 bg-black/60 px-2 py-1 rounded backdrop-blur-sm animate-bounce cursor-pointer border border-white/10"
+          className="text-[10px] font-bold text-santa-dark bg-santa-gold/90 px-3 py-1 rounded-full shadow-lg backdrop-blur-sm animate-bounce cursor-pointer border border-white/20"
         >
-            Play Jingle Bells 🎵
+            Play Holiday Jazz 🎷
         </span>
       )}
     </div>

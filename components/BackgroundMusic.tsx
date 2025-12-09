@@ -2,52 +2,60 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const BackgroundMusic: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Reliable permanent link for upbeat Christmas music
-  const AUDIO_URL = "https://cdn.pixabay.com/audio/2022/10/28/audio_924ebf5012.mp3"; 
+  // STABLE SOURCE: Wikimedia Commons (Kevin MacLeod - Jingle Bells)
+  // This link will not expire.
+  const AUDIO_URL = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Jingle_Bells_by_Kevin_MacLeod.ogg"; 
 
   useEffect(() => {
-    // Set initial volume
     if (audioRef.current) {
-        audioRef.current.volume = 0.4;
+        audioRef.current.volume = 0.5;
     }
   }, []);
 
-  const toggleMusic = () => {
+  const toggleMusic = async () => {
     if (!audioRef.current) return;
 
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      // Ensure audio is ready before playing
-      if (audioRef.current.readyState === 0) {
-          audioRef.current.load();
-      }
-      
-      const playPromise = audioRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch((error) => {
-            console.error("Playback failed (User interaction needed):", error);
-          });
+      setIsLoading(true);
+      try {
+        // Force load if needed
+        if (audioRef.current.readyState === 0) {
+            audioRef.current.load();
+        }
+        
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Playback failed:", error);
+        setIsLoading(false);
+        // Fallback alert for the user if browser blocks it completely
+        alert("Music blocked by browser settings. Please try clicking again!");
       }
     }
   };
 
   return (
     <div className="fixed bottom-6 left-6 z-[9999] flex flex-col items-start gap-2 pointer-events-auto">
-       {/* Native Audio Element for better browser support */}
-       <audio ref={audioRef} src={AUDIO_URL} loop preload="auto" />
+       {/* Native Audio Element with generic type support */}
+       <audio 
+         ref={audioRef} 
+         src={AUDIO_URL} 
+         loop 
+         preload="auto"
+         onError={(e) => console.error("Audio error:", e)} 
+       />
 
        {/* Music Toggle Button */}
        <button
         onClick={toggleMusic}
+        disabled={isLoading}
         className={`
             relative w-14 h-14 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] 
             flex items-center justify-center transition-all duration-300 transform active:scale-95
@@ -55,6 +63,7 @@ const BackgroundMusic: React.FC = () => {
             ${isPlaying 
                 ? 'bg-gradient-to-br from-green-600 to-green-800 animate-pulse-slow scale-110' 
                 : 'bg-gradient-to-br from-gray-700 to-gray-900 hover:scale-105'}
+            ${isLoading ? 'opacity-80 cursor-wait' : ''}
         `}
         aria-label={isPlaying ? "Mute Music" : "Play Music"}
         style={{ touchAction: 'manipulation' }}
@@ -65,11 +74,15 @@ const BackgroundMusic: React.FC = () => {
         )}
         
         {/* Icon */}
-        <i className={`fa-solid text-xl text-white transition-all duration-300 ${isPlaying ? 'fa-music animate-spin-slow' : 'fa-volume-xmark'}`}></i>
+        {isLoading ? (
+             <i className="fa-solid fa-spinner fa-spin text-white text-xl"></i>
+        ) : (
+             <i className={`fa-solid text-xl text-white transition-all duration-300 ${isPlaying ? 'fa-music animate-spin-slow' : 'fa-volume-xmark'}`}></i>
+        )}
       </button>
       
-      {/* Simplified Label as requested */}
-      {!isPlaying && (
+      {/* Label */}
+      {!isPlaying && !isLoading && (
         <span 
           onClick={toggleMusic}
           className="text-[10px] font-bold text-santa-dark bg-santa-gold/90 px-3 py-1 rounded-full shadow-lg backdrop-blur-sm animate-bounce cursor-pointer border border-white/20 whitespace-nowrap"

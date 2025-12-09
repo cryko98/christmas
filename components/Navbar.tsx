@@ -56,7 +56,8 @@ const Navbar: React.FC = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-center space-x-8">
               <NavLink onClick={() => scrollToSection('countdown')} label="Countdown" />
-              <NavLink onClick={() => scrollToSection('about')} label="Our Story" />
+              <NavLink onClick={() => scrollToSection('about')} label="Story" />
+              <NavLink onClick={() => scrollToSection('decorator')} label="Decorate" />
               <NavLink onClick={() => scrollToSection('game')} label="Game" />
               <NavLink onClick={() => scrollToSection('gift-gen')} label="Gifts" />
               <NavLink onClick={() => scrollToSection('santafy')} label="Santafy" />
@@ -99,6 +100,7 @@ const Navbar: React.FC = () => {
            <div className="flex flex-col space-y-4">
               <MobileLink onClick={() => scrollToSection('countdown')} label="Countdown" />
               <MobileLink onClick={() => scrollToSection('about')} label="Our Story" />
+              <MobileLink onClick={() => scrollToSection('decorator')} label="Trim the Tree" />
               <MobileLink onClick={() => scrollToSection('game')} label="Mini Game" />
               <MobileLink onClick={() => scrollToSection('gift-gen')} label="Gift Generator" />
               <MobileLink onClick={() => scrollToSection('santafy')} label="Santafy Tool" />

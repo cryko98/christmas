@@ -7,6 +7,7 @@ import Santafy from './components/Santafy';
 import CommunityWall from './components/CommunityWall';
 import Footer from './components/Footer';
 import ReindeerGame from './components/ReindeerGame';
+import TreeDecorator from './components/TreeDecorator';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -105,6 +106,7 @@ const App: React.FC = () => {
       <main className="relative z-10 flex flex-col gap-24 pb-32">
         <Hero />
         <About />
+        <TreeDecorator />
         <ReindeerGame />
         <GiftGenerator />
         <Santafy onAddToGallery={addToGallery} />

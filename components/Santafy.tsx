@@ -1,0 +1,212 @@
+import React, { useState, useRef } from 'react';
+import { GeneratorStatus, GalleryItem } from '../types';
+import { santafyImage } from '../services/geminiService';
+
+interface SantafyProps {
+  onAddToGallery: (item: GalleryItem) => void;
+}
+
+const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
+  const [status, setStatus] = useState<GeneratorStatus>(GeneratorStatus.IDLE);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [resultImage, setResultImage] = useState<string | null>(null);
+  const [twitterHandle, setTwitterHandle] = useState('');
+  const [isPosted, setIsPosted] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+        setStatus(GeneratorStatus.IDLE);
+        setResultImage(null);
+        setIsPosted(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSantafy = async () => {
+    if (!preview || status === GeneratorStatus.LOADING) return;
+
+    setStatus(GeneratorStatus.LOADING);
+    try {
+      const base64Data = preview.split(',')[1];
+      const generatedUrl = await santafyImage(base64Data);
+      setResultImage(generatedUrl);
+      setStatus(GeneratorStatus.SUCCESS);
+    } catch (e) {
+      console.error(e);
+      setStatus(GeneratorStatus.ERROR);
+    }
+  };
+
+  const handlePostToWall = () => {
+    if (resultImage) {
+      onAddToGallery({
+        url: resultImage,
+        handle: twitterHandle || '@AnonymousElf'
+      });
+      setIsPosted(true);
+    }
+  };
+
+  return (
+    <section id="santafy" className="px-4 relative">
+      <div className="max-w-6xl mx-auto">
+        
+        <div className="text-center mb-16">
+          <span className="text-white/70 font-bold tracking-[0.3em] text-xs uppercase mb-4 block">AI Powered Workshop</span>
+          <h2 className="text-5xl md:text-6xl font-serif text-white drop-shadow-lg">
+            Santafy <span className="text-santa-gold italic">Yourself</span>
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          
+          {/* UPLOAD CARD */}
+          <div className="glass-card-dark p-8 md:p-12 transition-all hover:bg-black/50">
+            <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+               <span className="text-4xl font-serif text-white/20">01</span>
+               <h3 className="text-xl font-bold text-white tracking-wide">Upload Photo</h3>
+            </div>
+            
+            <div className="bg-white/5 rounded-lg border border-white/10 hover:border-white/30 transition-colors min-h-[350px] flex flex-col items-center justify-center relative overflow-hidden group">
+              {preview ? (
+                <div className="relative w-full h-full p-4 flex items-center justify-center">
+                  <img src={preview} alt="Original" className="max-h-[300px] w-auto object-contain rounded shadow-2xl" />
+                  <button 
+                    onClick={() => { setPreview(null); setStatus(GeneratorStatus.IDLE); }}
+                    className="absolute top-4 right-4 bg-black/50 text-white rounded-full w-8 h-8 hover:bg-red-500 transition-colors flex items-center justify-center backdrop-blur-md"
+                  >
+                    <i className="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              ) : (
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="cursor-pointer text-center p-10 w-full h-full flex flex-col items-center justify-center"
+                >
+                  <i className="fa-solid fa-image text-4xl text-white/20 mb-4 group-hover:text-santa-gold transition-colors"></i>
+                  <p className="text-lg font-medium text-white/60">Select Image</p>
+                </div>
+              )}
+              
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+            </div>
+
+            {preview && status !== GeneratorStatus.SUCCESS && (
+               <button 
+                onClick={handleSantafy}
+                disabled={status === GeneratorStatus.LOADING}
+                className={`mt-8 w-full py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all ${
+                  status === GeneratorStatus.LOADING 
+                  ? 'bg-white/10 text-white/50 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-santa-gold to-yellow-400 text-black hover:shadow-glow'
+                }`}
+              >
+                {status === GeneratorStatus.LOADING ? 'Processing...' : 'Generate Magic'}
+              </button>
+            )}
+          </div>
+
+          {/* RESULT CARD */}
+          <div className="glass-card-dark p-8 md:p-12 border-santa-gold/30">
+            <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+               <span className="text-4xl font-serif text-santa-gold/50">02</span>
+               <h3 className="text-xl font-bold text-white tracking-wide">Your Result</h3>
+            </div>
+
+            <div className="bg-black/20 rounded-lg min-h-[350px] flex items-center justify-center relative overflow-hidden border border-white/5">
+               {status === GeneratorStatus.IDLE && !resultImage && (
+                  <p className="text-white/30 font-serif italic text-lg">Magic happens here...</p>
+               )}
+
+               {status === GeneratorStatus.LOADING && (
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 border-4 border-santa-gold border-t-transparent rounded-full animate-spin mb-4"></div>
+                  </div>
+               )}
+
+               {resultImage && (
+                  <div className="w-full h-full p-2 animate-in fade-in duration-700">
+                     <img src={resultImage} alt="Santafied" className="w-full h-full object-contain rounded shadow-2xl" />
+                  </div>
+               )}
+            </div>
+
+            {resultImage && (
+               <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                 
+                 <div className="space-y-2">
+                    <label className="text-santa-gold text-xs font-bold uppercase tracking-widest ml-4 block opacity-80">
+                      Claim your masterpiece
+                    </label>
+                    <div className="group relative bg-black/40 rounded-full flex items-center border border-white/10 focus-within:border-santa-gold transition-colors p-1">
+                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-santa-gold group-focus-within:text-white transition-colors">
+                          <i className="fa-brands fa-twitter text-xl"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            value={twitterHandle}
+                            onChange={(e) => setTwitterHandle(e.target.value)}
+                            placeholder="@username"
+                            className="bg-transparent border-none outline-none text-white px-4 flex-1 placeholder-white/20 font-medium h-full"
+                            disabled={isPosted}
+                        />
+                    </div>
+                 </div>
+
+                 <div className="grid grid-cols-2 gap-4">
+                    <button 
+                      onClick={handlePostToWall}
+                      disabled={isPosted}
+                      className={`relative overflow-hidden py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-300 transform active:scale-95 ${
+                        isPosted 
+                          ? 'bg-green-600 text-white shadow-none cursor-default border border-green-500' 
+                          : 'bg-white text-santa-dark hover:bg-gray-100 shadow-lg hover:shadow-glow'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        {isPosted ? (
+                          <>
+                            <i className="fa-solid fa-check-circle text-lg animate-bounce"></i>
+                            <span>Posted!</span>
+                          </>
+                        ) : (
+                          <>
+                            <i className="fa-solid fa-share-nodes"></i>
+                            <span>Share to Wall</span>
+                          </>
+                        )}
+                      </div>
+                    </button>
+
+                    <a 
+                      href={resultImage} 
+                      download="santafied_meme.png"
+                      className="flex items-center justify-center gap-2 py-4 rounded-full font-bold text-sm uppercase tracking-widest text-center border border-white/20 text-white hover:bg-white/10 transition-colors"
+                    >
+                      <i className="fa-solid fa-download"></i>
+                      <span>Download</span>
+                    </a>
+                 </div>
+                 
+                 {isPosted && (
+                    <p className="text-center text-green-400 text-xs uppercase tracking-widest animate-pulse">
+                      See it in the Gallery below!
+                    </p>
+                 )}
+               </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Santafy;

@@ -1,0 +1,8 @@
+{
+  "name": "The Official Christmas Coin",
+  "description": "The official Christmas memecoin on Solana. $CHRISTMAS is here to celebrate the holidays.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

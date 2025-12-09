@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ChatSession } from "@google/genai";
 
 // Initialize lazily to avoid top-level crash if env vars are missing
 let aiInstance: GoogleGenAI | null = null;
@@ -16,6 +16,7 @@ const getAI = () => {
 
 // Constants
 const MODEL_NAME = 'gemini-2.5-flash-image';
+const CHAT_MODEL_NAME = 'gemini-2.5-flash';
 
 const FUNNY_ITEMS = [
   "a single raw potato",
@@ -47,6 +48,55 @@ const FUNNY_ITEMS = [
   "a desk fan",
   "a garden gnome"
 ];
+
+// --- SANTA CHAT LOGIC ---
+
+let santaChatSession: ChatSession | null = null;
+
+export const getSantaChatResponse = async (userMessage: string): Promise<string> => {
+  try {
+    const ai = getAI();
+
+    // Initialize session if it doesn't exist
+    if (!santaChatSession) {
+      santaChatSession = ai.chats.create({
+        model: CHAT_MODEL_NAME,
+        config: {
+          systemInstruction: `
+            You are Santa Claus. 
+            Character traits: Jolly, Witty, Kind, slightly obsessed with cookies and milk.
+            Context: You are on the website for $CHRISTMAS, the official Christmas Memecoin on Solana.
+            
+            Guidelines:
+            1. Always start or end with a variation of "Ho ho ho!".
+            2. Be funny and lighthearted. Use emojis (🎄, 🎅, 🍪).
+            3. If asked about the coin ($CHRISTMAS), say it's the only currency accepted at the North Pole Gift Shop now.
+            4. If asked for a joke, tell a corny Christmas "dad joke".
+            5. Keep responses concise (under 50 words) as you are in a small chat window.
+            6. Never break character. You are the real Santa.
+            7. Mention the elves (who are currently trading crypto) or Mrs. Claus occasionally.
+          `,
+          temperature: 0.9, // High creativity for humor
+        },
+      });
+    }
+
+    const response = await santaChatSession.sendMessage({
+      message: userMessage
+    });
+
+    return response.text || "Ho ho ho! The wifi at the North Pole is snowy today. Try again!";
+  } catch (error) {
+    console.error("Santa API Error:", error);
+    return "Ho ho ho! My elves tripped over the server cables. Give me a moment!";
+  }
+};
+
+export const resetSantaChat = () => {
+    santaChatSession = null;
+};
+
+// --- EXISTING IMAGE LOGIC ---
 
 /**
  * Generates a random funny everyday Christmas gift image.

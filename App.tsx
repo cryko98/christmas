@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import ReindeerGame from './components/ReindeerGame';
 import TreeDecorator from './components/TreeDecorator';
 import MemoryGame from './components/MemoryGame';
+import SantaChat from './components/SantaChat';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -122,6 +123,9 @@ const App: React.FC = () => {
       </div>
 
       <Footer />
+      
+      {/* Floating Elements */}
+      <SantaChat />
     </div>
   );
 };

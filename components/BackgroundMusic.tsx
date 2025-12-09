@@ -5,22 +5,19 @@ const BackgroundMusic: React.FC = () => {
   const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Royalty-free Christmas Lo-fi / Chill track URL
-  // Using a reliable CDN source
-  const AUDIO_URL = "https://cdn.pixabay.com/download/audio/2022/11/22/audio_febc508520.mp3?filename=jingle-bells-lofi-126626.mp3";
+  // Classic Upbeat Jingle Bells (Royalty Free)
+  const AUDIO_URL = "https://cdn.pixabay.com/audio/2022/10/28/audio_924ebf5012.mp3"; 
 
   useEffect(() => {
     // Create audio object
     const audio = new Audio(AUDIO_URL);
     audio.loop = true;
-    audio.volume = 0.4; // Not too loud
+    audio.volume = 0.5; // Set volume to 50%
     audioRef.current = audio;
 
-    // Optional: Try to play on first click anywhere on the document
+    // Browser Autoplay Policy: We need a user interaction first.
     const handleFirstInteraction = () => {
         if (!hasInteracted) {
-            // We don't auto-play to respect user preference, 
-            // but we mark interaction as available so the button works instantly
             setHasInteracted(true);
         }
     };
@@ -59,27 +56,22 @@ const BackgroundMusic: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-[100] flex flex-col items-start gap-2">
+    <div className="fixed bottom-6 left-6 z-[110] flex flex-col items-start gap-2">
        
-       {/* Tooltip hint that appears initially */}
-       {!isPlaying && !hasInteracted && (
-          <div className="bg-white/90 text-santa-dark text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg mb-2 animate-bounce pointer-events-none">
-             Click for Music 🎵
-          </div>
-       )}
-
+       {/* Music Toggle Button */}
        <button
         onClick={toggleMusic}
         className={`
-            relative w-14 h-14 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] 
-            flex items-center justify-center transition-all duration-300 transform hover:scale-110 
-            border-2 border-white/20 cursor-pointer pointer-events-auto active:scale-95
+            relative w-12 h-12 md:w-14 md:h-14 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] 
+            flex items-center justify-center transition-all duration-300 transform active:scale-95
+            border-2 border-white/20 cursor-pointer pointer-events-auto
             ${isPlaying 
-                ? 'bg-gradient-to-br from-green-600 to-green-800 animate-pulse-slow' 
-                : 'bg-gradient-to-br from-gray-700 to-gray-900'}
+                ? 'bg-gradient-to-br from-green-600 to-green-800 animate-pulse-slow scale-110' 
+                : 'bg-gradient-to-br from-gray-700 to-gray-900 hover:scale-105'}
         `}
-        aria-label="Toggle Christmas Music"
-        style={{ touchAction: 'manipulation' }} // Mobile optimization
+        aria-label={isPlaying ? "Mute Music" : "Play Music"}
+        title={isPlaying ? "Mute Jingle Bells" : "Play Jingle Bells"}
+        style={{ touchAction: 'manipulation' }}
       >
         {/* Glow Ring when playing */}
         {isPlaying && (
@@ -87,17 +79,18 @@ const BackgroundMusic: React.FC = () => {
         )}
         
         {/* Icon */}
-        <i className={`fa-solid text-xl text-white transition-all duration-300 ${isPlaying ? 'fa-music animate-spin-slow' : 'fa-volume-xmark'}`}></i>
-
-        {/* Equalizer Bars (Fake) */}
-        {isPlaying && (
-           <div className="absolute bottom-3 flex gap-0.5 h-3 items-end opacity-0 hover:opacity-100 transition-opacity">
-               <div className="w-1 bg-white animate-[bounce_0.5s_infinite]"></div>
-               <div className="w-1 bg-white animate-[bounce_0.7s_infinite]"></div>
-               <div className="w-1 bg-white animate-[bounce_0.6s_infinite]"></div>
-           </div>
-        )}
+        <i className={`fa-solid text-lg md:text-xl text-white transition-all duration-300 ${isPlaying ? 'fa-music animate-spin-slow' : 'fa-volume-xmark'}`}></i>
       </button>
+      
+      {/* Label for clarity (fades out when playing) */}
+      {!isPlaying && (
+        <span 
+          onClick={toggleMusic}
+          className="text-[10px] font-bold text-white/90 bg-black/60 px-2 py-1 rounded backdrop-blur-sm animate-bounce cursor-pointer border border-white/10"
+        >
+            Play Jingle Bells 🎵
+        </span>
+      )}
     </div>
   );
 };

@@ -11,7 +11,6 @@ import TreeDecorator from './components/TreeDecorator';
 import MemoryGame from './components/MemoryGame';
 import SantaChat from './components/SantaChat';
 import CozyFireplace from './components/CozyFireplace';
-import SectionDivider from './components/SectionDivider';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -134,32 +133,24 @@ const App: React.FC = () => {
 
       <Navbar />
       
-      {/* Removed gap-24 and added relative to allow dividers to overlap properly */}
-      <main className="relative z-10 flex flex-col gap-0 pb-32">
+      {/* Restored gap-24 for spacing since dividers are gone */}
+      <main className="relative z-10 flex flex-col gap-24 pb-32">
         <Hero />
-        <SectionDivider />
-
+        
         <About />
-        <SectionDivider />
-
+        
         <CozyFireplace />
-        <SectionDivider />
-
+        
         <TreeDecorator />
-        <SectionDivider />
-
+        
         <ReindeerGame />
-        <SectionDivider />
-
+        
         <MemoryGame />
-        <SectionDivider />
-
+        
         <GiftGenerator />
-        <SectionDivider />
-
+        
         <Santafy onAddToGallery={addToGallery} />
-        <SectionDivider />
-
+        
         <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />
       </main>
 

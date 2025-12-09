@@ -6,8 +6,9 @@ import GiftGenerator from './components/GiftGenerator';
 import Santafy from './components/Santafy';
 import CommunityWall from './components/CommunityWall';
 import Footer from './components/Footer';
+import ReindeerGame from './components/ReindeerGame';
 import { GalleryItem } from './types';
-import { supabase } from './services/supabaseClient';
+import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
 const App: React.FC = () => {
   // Shared state for the gallery
@@ -16,6 +17,12 @@ const App: React.FC = () => {
   // Fetch items from Supabase on load
   useEffect(() => {
     const fetchGallery = async () => {
+      // If we are in local demo mode, don't try to fetch from invalid URL
+      if (!isSupabaseConfigured) {
+        console.log("App running in Demo Mode (Supabase not configured)");
+        return;
+      }
+
       const { data, error } = await supabase
         .from('gallery')
         .select('*')
@@ -36,6 +43,24 @@ const App: React.FC = () => {
     setTimeout(() => {
       document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
+  };
+
+  const deleteFromGallery = async (id: number | string) => {
+    // 1. Optimistic UI update (remove immediately from view)
+    setGalleryItems(prev => prev.filter(item => item.id !== id));
+
+    // 2. If it's a real backend item (number ID) and Supabase is working, delete from DB
+    if (isSupabaseConfigured && typeof id === 'number') {
+        const { error } = await supabase
+            .from('gallery')
+            .delete()
+            .eq('id', id);
+        
+        if (error) {
+            console.error("Error deleting from backend:", error);
+            // Optionally revert UI change here if needed, but for a memecoin site, nice-to-have
+        }
+    }
   };
 
   // Generate subtle falling snow
@@ -80,9 +105,10 @@ const App: React.FC = () => {
       <main className="relative z-10 flex flex-col gap-24 pb-32">
         <Hero />
         <About />
+        <ReindeerGame />
         <GiftGenerator />
         <Santafy onAddToGallery={addToGallery} />
-        <CommunityWall items={galleryItems} onUpload={addToGallery} />
+        <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />
       </main>
 
       {/* Atmospheric Fog Effect at Bottom */}

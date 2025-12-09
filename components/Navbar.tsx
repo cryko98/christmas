@@ -22,24 +22,24 @@ const Navbar: React.FC = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b border-white/10 ${
-        scrolled ? 'bg-santa-dark/90 backdrop-blur-md py-2 shadow-lg' : 'bg-transparent py-6'
+      className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 border-b border-white/10 ${
+        scrolled ? 'bg-santa-dark/95 backdrop-blur-md py-2 shadow-lg' : 'bg-transparent py-4 md:py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
           <div 
-            className="flex items-center gap-3 cursor-pointer group" 
+            className="flex items-center gap-3 cursor-pointer group relative z-[101]" 
             onClick={() => window.scrollTo(0,0)}
           >
             <img 
               src="https://pbs.twimg.com/media/G7wdiRaX0AAQyGa?format=jpg&name=small" 
               alt="SantaCoin Logo" 
-              className="w-12 h-12 rounded-full border-2 border-white/20 shadow-lg group-hover:animate-shake object-cover"
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white/20 shadow-lg group-hover:animate-shake object-cover"
             />
             <div className="flex flex-col">
-              <span className="font-serif text-white font-bold text-2xl tracking-wide leading-none">
+              <span className="font-serif text-white font-bold text-xl md:text-2xl tracking-wide leading-none">
                 $SANTACOIN
               </span>
               <span className="text-[10px] text-santa-gold uppercase tracking-[0.2em] opacity-80">
@@ -62,9 +62,13 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-4">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-white text-2xl focus:outline-none">
+          {/* Actions - Mobile Menu Button */}
+          <div className="flex items-center gap-4 md:hidden relative z-[101]">
+            <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+                className="text-white text-2xl p-2 focus:outline-none active:scale-95 transition-transform"
+                aria-label="Toggle Menu"
+            >
                 <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
             </button>
           </div>
@@ -73,8 +77,8 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-santa-dark/95 backdrop-blur-xl border-t border-white/10 p-6 absolute w-full shadow-2xl">
-           <div className="flex flex-col space-y-4">
+        <div className="md:hidden fixed inset-0 top-0 bg-santa-dark/98 backdrop-blur-xl z-[90] flex flex-col justify-center items-center">
+           <div className="flex flex-col space-y-6 text-center w-full px-8">
               <MobileLink onClick={() => scrollToSection('countdown')} label="Countdown" />
               <MobileLink onClick={() => scrollToSection('about')} label="Our Story" />
               <MobileLink onClick={() => scrollToSection('decorator')} label="Trim the Tree" />
@@ -101,7 +105,7 @@ const NavLink: React.FC<{ onClick: () => void; label: string }> = ({ onClick, la
 );
 
 const MobileLink: React.FC<{ onClick: () => void; label: string }> = ({ onClick, label }) => (
-  <button onClick={onClick} className="text-white text-lg font-serif font-bold text-left border-b border-white/10 pb-2">
+  <button onClick={onClick} className="text-white text-2xl font-serif font-bold py-4 border-b border-white/10 w-full active:text-santa-gold transition-colors">
     {label}
   </button>
 );

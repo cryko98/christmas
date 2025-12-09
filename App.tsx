@@ -67,10 +67,10 @@ const App: React.FC = () => {
     }
   };
 
-  // Generate HEAVY falling snow
+  // Generate Snow - Reduced count for mobile performance
   const snowflakes = useMemo(() => {
-    // Increased from 75 to 150 for more cheer
-    return Array.from({ length: 150 }).map((_, i) => ({
+    // Reduced from 150 to 80 to prevent blocking input thread on weak mobile devices
+    return Array.from({ length: 80 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
       animationDuration: `${Math.random() * 8 + 5}s`, // Varied speed
@@ -83,11 +83,11 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen font-sans text-white relative overflow-x-hidden">
       
-      {/* Background Pattern */}
-      <div className="bg-pattern"></div>
+      {/* Background Pattern - z-0 */}
+      <div className="bg-pattern fixed inset-0 z-0"></div>
 
-      {/* Global Christmas Lights Decoration (Fixed Top) */}
-      <div className="fixed top-0 left-0 w-full z-[60] pointer-events-none h-12 hidden md:block">
+      {/* Global Christmas Lights Decoration (Fixed Top) - z-30 (Above background, below navbar) */}
+      <div className="fixed top-0 left-0 w-full z-30 pointer-events-none fixed-lights-container h-12 hidden md:block">
          <div className="w-full h-full flex justify-between px-2">
             {Array.from({ length: 30 }).map((_, i) => {
                  const colors = ['#ff0000', '#00ff00', '#ffd700', '#0000ff'];
@@ -112,8 +112,8 @@ const App: React.FC = () => {
          </div>
       </div>
 
-      {/* Heavy Snow - CRITICAL: pointer-events-none added to individual flakes */}
-      <div className="snow-container pointer-events-none">
+      {/* Snow - z-1 */}
+      <div className="snow-container pointer-events-none" style={{ zIndex: 1 }}>
         {snowflakes.map((flake) => (
           <div
             key={flake.id}
@@ -131,9 +131,10 @@ const App: React.FC = () => {
         ))}
       </div>
 
+      {/* Navbar - z-100 (Handled in component) */}
       <Navbar />
       
-      {/* Restored gap-24 for spacing. INCREASED Z-INDEX TO 20 to be above snow/fog */}
+      {/* Main Content - z-20 (Definitely above snow/fog/bg) */}
       <main className="relative z-20 flex flex-col gap-24 pb-32">
         <Hero />
         
@@ -154,16 +155,21 @@ const App: React.FC = () => {
         <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />
       </main>
 
-      {/* Atmospheric Fog Effect at Bottom - z-index 5 is lower than main z-20 */}
-      <div className="fog-container">
+      {/* Atmospheric Fog Effect at Bottom - z-5 (Below content) */}
+      <div className="fog-container" style={{ zIndex: 5 }}>
         <div className="fog-img"></div>
         <div className="fog-img-2"></div>
       </div>
 
-      <Footer />
+      {/* Footer - z-20 */}
+      <div className="relative z-20">
+        <Footer />
+      </div>
       
-      {/* Floating Elements */}
-      <SantaChat />
+      {/* Floating Elements - z-50 */}
+      <div className="relative z-50">
+        <SantaChat />
+      </div>
     </div>
   );
 };

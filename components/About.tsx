@@ -9,21 +9,24 @@ const About: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
             <div className="text-left space-y-8">
               <div>
-                <span className="text-santa-red font-bold tracking-widest text-sm uppercase mb-2 block">The Mission 2025</span>
+                <span className="text-santa-red font-bold tracking-widest text-sm uppercase mb-2 block">The Lore & Mission</span>
                 <h2 className="text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
                   The Official <span className="text-santa-red italic">Christmas Coin</span> of 2025
                 </h2>
               </div>
               
-              <p className="text-lg text-gray-600 leading-relaxed font-light">
-                Forget the socks and sweaters. This year, everyone is unwrapping <strong>$CHRISTMAS</strong>. We are here to build the strongest, merriest community on Solana. 
-                <br /><br />
-                Our goal is clear: gather the elves, hodl through the snowstorms, and send this coin to a <strong>multi-million dollar market cap</strong> before Santa even parks his sleigh. Don't be a Grinch—join the movement.
-              </p>
+              <div className="text-lg text-gray-600 leading-relaxed font-light space-y-4">
+                <p>
+                  $CHRISTMAS was born from a singular festive vision: to build the strongest, warmest community on the blockchain this holiday season. In a world of chaos, this memecoin is a digital hearth where everyone can find <strong>peace, joy, and unity</strong> through the spirit of the holidays.
+                </p>
+                <p>
+                  As the <strong>Official Christmas Memecoin of 2025 on Solana</strong>, our ambition shines brighter than the North Star. We are uniting under one banner to build a legendary community and send this coin to a <strong>multi-million dollar market cap</strong>.
+                </p>
+              </div>
               
               <div className="pl-6 border-l-4 border-santa-gold">
                   <p className="text-xl text-gray-800 font-serif italic">
-                    "This isn't just a memecoin; it's a holiday tradition. We are going to the moon, and we're taking Christmas with us."
+                    "Find peace in the pump. This isn't just a coin; it's a movement to take Christmas to the moon together."
                   </p>
               </div>
 
@@ -32,13 +35,13 @@ const About: React.FC = () => {
                     <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-santa-red">
                        <i className="fa-solid fa-rocket"></i>
                     </div>
-                    <span className="font-semibold text-sm uppercase tracking-wide">Multi-Million Goal</span>
+                    <span className="font-semibold text-sm uppercase tracking-wide">Multi-Million MC</span>
                  </div>
                  <div className="flex items-center gap-3 text-gray-700">
                     <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
-                       <i className="fa-solid fa-users"></i>
+                       <i className="fa-solid fa-peace"></i>
                     </div>
-                    <span className="font-semibold text-sm uppercase tracking-wide">Strong Community</span>
+                    <span className="font-semibold text-sm uppercase tracking-wide">Holiday Peace</span>
                  </div>
               </div>
             </div>

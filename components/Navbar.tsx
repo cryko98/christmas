@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const Navbar: React.FC = () => {
-  const [copied, setCopied] = useState(false);
-  const caAddress = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -13,12 +11,6 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(caAddress);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -68,26 +60,6 @@ const Navbar: React.FC = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button 
-              onClick={copyToClipboard}
-              className="hidden lg:flex items-center gap-3 bg-white/10 hover:bg-white/20 px-5 py-2 rounded-full border border-white/20 transition-all backdrop-blur-sm group"
-            >
-              <span className="text-xs text-santa-gold font-bold tracking-widest uppercase">CA:</span>
-              <span className="text-xs text-white/90 font-mono tracking-wide">
-                {caAddress.substring(0, 6)}...{caAddress.substring(caAddress.length - 4)}
-              </span>
-              <i className={`fa-regular ${copied ? 'fa-circle-check text-green-400' : 'fa-copy text-white'} group-hover:scale-110 transition-transform`}></i>
-            </button>
-
-            <a 
-              href="https://x.com" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-gray-900 transition-all border border-white/20 shadow-lg hover:-translate-y-1"
-            >
-               <i className="fa-brands fa-x-twitter text-white text-lg"></i>
-            </a>
-
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-white text-2xl focus:outline-none">
                 <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
             </button>

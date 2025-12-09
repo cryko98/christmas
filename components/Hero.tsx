@@ -3,6 +3,8 @@ import { CountDownTime } from '../types';
 
 const Hero: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<CountDownTime>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [copied, setCopied] = useState(false);
+  const caAddress = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -31,6 +33,12 @@ const Hero: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(caAddress);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <section id="countdown" className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-4 text-center overflow-hidden">
@@ -72,6 +80,35 @@ const Hero: React.FC = () => {
               VIEW CHART
            </button>
         </div>
+
+        {/* Socials & Contract Address */}
+        <div className="mt-10 flex flex-col items-center gap-4 z-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+                
+                <button 
+                    onClick={copyToClipboard}
+                    className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-6 py-3 rounded-full border border-white/20 transition-all backdrop-blur-md group cursor-pointer shadow-lg"
+                >
+                    <span className="text-xs text-santa-gold font-bold tracking-widest uppercase">CA:</span>
+                    <span className="text-sm text-white/90 font-mono tracking-wide">
+                    {caAddress.substring(0, 6)}...{caAddress.substring(caAddress.length - 4)}
+                    </span>
+                    <i className={`fa-regular ${copied ? 'fa-circle-check text-green-400' : 'fa-copy text-white'} group-hover:scale-110 transition-transform`}></i>
+                </button>
+
+                <a 
+                    href="https://x.com" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="w-12 h-12 bg-black/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black transition-all border border-white/20 shadow-lg hover:-translate-y-1 group"
+                >
+                    <i className="fa-brands fa-x-twitter text-white text-xl group-hover:scale-110 transition-transform"></i>
+                </a>
+
+            </div>
+            {copied && <span className="text-green-400 text-xs font-bold tracking-widest uppercase animate-pulse bg-black/50 px-3 py-1 rounded-full">Copied to clipboard</span>}
+        </div>
+
       </div>
     </section>
   );

@@ -121,7 +121,7 @@ const GiftGenerator: React.FC = () => {
                           <h3 className="font-serif text-2xl text-gray-800 italic mb-2">"It's... exactly what I wanted?"</h3>
                           <div className="w-16 h-1 bg-santa-red mx-auto my-4 opacity-20"></div>
                           <p className="text-xs font-mono text-gray-400 uppercase tracking-widest">
-                            Official $CHRISTMAS Gift
+                            Official $SANTACOIN Gift
                           </p>
                       </div>
                   </div>

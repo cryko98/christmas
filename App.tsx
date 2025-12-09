@@ -136,10 +136,12 @@ const App: React.FC = () => {
       <main className="relative z-10 flex flex-col gap-24 pb-32">
         <Hero />
         
-        {/* Insert Cozy Fireplace Here */}
+        {/* About section moved here as requested */}
+        <About />
+
+        {/* Fireplace moved after About */}
         <CozyFireplace />
 
-        <About />
         <TreeDecorator />
         <ReindeerGame />
         <MemoryGame />

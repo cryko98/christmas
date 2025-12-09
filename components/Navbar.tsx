@@ -33,10 +33,10 @@ const Navbar: React.FC = () => {
             className="flex items-center gap-3 cursor-pointer group" 
             onClick={() => window.scrollTo(0,0)}
           >
-            <div className="text-4xl filter drop-shadow-md group-hover:animate-shake">🎄</div>
+            <div className="text-4xl filter drop-shadow-md group-hover:animate-shake">🎅</div>
             <div className="flex flex-col">
               <span className="font-serif text-white font-bold text-2xl tracking-wide leading-none">
-                $CHRISTMAS
+                $SANTACOIN
               </span>
               <span className="text-[10px] text-santa-gold uppercase tracking-[0.2em] opacity-80">
                 Solana Edition

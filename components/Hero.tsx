@@ -47,14 +47,14 @@ const Hero: React.FC = () => {
         
         <div className="mb-6 animate-float">
           <span className="inline-block py-1 px-4 border border-santa-gold/50 rounded-full bg-black/20 backdrop-blur-sm text-santa-gold text-xs font-bold tracking-[0.3em] uppercase mb-4">
-            The Official Christmas Coin
+            The Official Christmas Memecoin
           </span>
           <h1 className="text-7xl md:text-9xl font-serif text-white drop-shadow-lg leading-tight">
-            Merry <span className="text-gold-gradient italic pr-2">Christmas</span>
+            Merry <span className="text-gold-gradient italic pr-2">SantaCoin</span>
           </h1>
           <p className="mt-4 text-xl md:text-2xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed">
-            The most festive memecoin on Solana. <br/>
-            <span className="font-serif italic text-santa-gold">Ho Ho HODL</span> $CHRISTMAS into the New Year.
+            The official currency of the North Pole on Solana. <br/>
+            <span className="font-serif italic text-santa-gold">Ho Ho HODL</span> $SANTACOIN into the New Year.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
         
         <div className="mt-20 flex flex-col md:flex-row gap-6 z-10">
            <button className="bg-gradient-to-r from-santa-red to-santa-dark text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-glow hover:-translate-y-1 transition-all duration-300 border border-white/20 tracking-wider">
-              BUY $CHRISTMAS
+              BUY $SANTACOIN
            </button>
            <button className="bg-white text-santa-red px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 tracking-wider">
               VIEW CHART

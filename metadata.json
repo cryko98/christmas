@@ -1,6 +1,6 @@
 {
-  "name": "The Official Christmas Coin",
-  "description": "The official Christmas memecoin on Solana. $CHRISTMAS is here to celebrate the holidays.",
+  "name": "The Official SantaCoin",
+  "description": "The official Christmas memecoin on Solana. $SANTACOIN is the currency of the North Pole.",
   "requestFramePermissions": [
     "camera",
     "microphone"

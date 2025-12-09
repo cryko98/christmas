@@ -33,7 +33,11 @@ const Navbar: React.FC = () => {
             className="flex items-center gap-3 cursor-pointer group" 
             onClick={() => window.scrollTo(0,0)}
           >
-            <div className="text-4xl filter drop-shadow-md group-hover:animate-shake">🎅</div>
+            <img 
+              src="https://pbs.twimg.com/media/G7wdiRaX0AAQyGa?format=jpg&name=small" 
+              alt="SantaCoin Logo" 
+              className="w-12 h-12 rounded-full border-2 border-white/20 shadow-lg group-hover:animate-shake object-cover"
+            />
             <div className="flex flex-col">
               <span className="font-serif text-white font-bold text-2xl tracking-wide leading-none">
                 $SANTACOIN

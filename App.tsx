@@ -8,6 +8,7 @@ import CommunityWall from './components/CommunityWall';
 import Footer from './components/Footer';
 import ReindeerGame from './components/ReindeerGame';
 import TreeDecorator from './components/TreeDecorator';
+import MemoryGame from './components/MemoryGame';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -108,6 +109,7 @@ const App: React.FC = () => {
         <About />
         <TreeDecorator />
         <ReindeerGame />
+        <MemoryGame />
         <GiftGenerator />
         <Santafy onAddToGallery={addToGallery} />
         <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />

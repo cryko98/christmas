@@ -58,7 +58,8 @@ const Navbar: React.FC = () => {
               <NavLink onClick={() => scrollToSection('countdown')} label="Countdown" />
               <NavLink onClick={() => scrollToSection('about')} label="Story" />
               <NavLink onClick={() => scrollToSection('decorator')} label="Decorate" />
-              <NavLink onClick={() => scrollToSection('game')} label="Game" />
+              <NavLink onClick={() => scrollToSection('game')} label="Dash" />
+              <NavLink onClick={() => scrollToSection('memory-game')} label="Memory" />
               <NavLink onClick={() => scrollToSection('gift-gen')} label="Gifts" />
               <NavLink onClick={() => scrollToSection('santafy')} label="Santafy" />
               <NavLink onClick={() => scrollToSection('gallery')} label="Gallery" />
@@ -101,7 +102,8 @@ const Navbar: React.FC = () => {
               <MobileLink onClick={() => scrollToSection('countdown')} label="Countdown" />
               <MobileLink onClick={() => scrollToSection('about')} label="Our Story" />
               <MobileLink onClick={() => scrollToSection('decorator')} label="Trim the Tree" />
-              <MobileLink onClick={() => scrollToSection('game')} label="Mini Game" />
+              <MobileLink onClick={() => scrollToSection('game')} label="Reindeer Dash" />
+              <MobileLink onClick={() => scrollToSection('memory-game')} label="Memory Match" />
               <MobileLink onClick={() => scrollToSection('gift-gen')} label="Gift Generator" />
               <MobileLink onClick={() => scrollToSection('santafy')} label="Santafy Tool" />
               <MobileLink onClick={() => scrollToSection('gallery')} label="Community Gallery" />

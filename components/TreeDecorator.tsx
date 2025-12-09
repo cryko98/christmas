@@ -46,7 +46,12 @@ const STICKERS = [
 ];
 
 const TreeDecorator: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // We use two canvases:
+  // 1. bgCanvasRef: Holds the tree and background (static).
+  // 2. drawCanvasRef: Holds the user's strokes and stickers (dynamic).
+  // This allows the eraser to make the drawing layer transparent, revealing the tree.
+  const bgCanvasRef = useRef<HTMLCanvasElement>(null);
+  const drawCanvasRef = useRef<HTMLCanvasElement>(null);
   
   // --- STATE ---
   const [strokes, setStrokes] = useState<Stroke[]>([]);
@@ -63,7 +68,8 @@ const TreeDecorator: React.FC = () => {
 
   // --- DRAWING LOGIC ---
 
-  const drawTree = (ctx: CanvasRenderingContext2D) => {
+  // Draws the static scene once
+  const drawTree = useCallback((ctx: CanvasRenderingContext2D) => {
     const width = CANVAS_WIDTH;
     const height = CANVAS_HEIGHT;
 
@@ -115,26 +121,38 @@ const TreeDecorator: React.FC = () => {
     drawLayer(height - 560, 130, 180); 
 
     ctx.shadowBlur = 0;
-  };
+  }, []);
 
-  const renderCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
+  // Initialize Background
+  useEffect(() => {
+    const canvas = bgCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    drawTree(ctx);
+  }, [drawTree]);
+
+  // Render User Drawings
+  const renderDrawingLayer = useCallback(() => {
+    const canvas = drawCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 1. Draw Base Scene
-    drawTree(ctx);
+    // Clear previous frame completely
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 2. Draw Stickers (Layer 1 - Under paint or over tree? Let's put stamps on tree, then paint over)
+    // 1. Draw Stickers
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    ctx.shadowBlur = 0;
     stickers.forEach(s => {
        ctx.font = `${s.size}px sans-serif`;
+       ctx.fillStyle = '#FFFFFF'; // Emoji color default (not used for emoji text but good practice)
        ctx.fillText(s.emoji, s.x, s.y);
     });
 
-    // 3. Draw Strokes
+    // 2. Draw Strokes
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
@@ -143,8 +161,17 @@ const TreeDecorator: React.FC = () => {
              // If it's a single dot/click
              ctx.beginPath();
              ctx.fillStyle = stroke.color;
-             ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.size / 2, 0, Math.PI * 2);
-             ctx.fill();
+             
+             if (stroke.tool === 'ERASER') {
+                 ctx.globalCompositeOperation = 'destination-out';
+                 ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.size / 2, 0, Math.PI * 2);
+                 ctx.fill();
+                 ctx.globalCompositeOperation = 'source-over';
+             } else {
+                 ctx.globalCompositeOperation = 'source-over';
+                 ctx.arc(stroke.points[0].x, stroke.points[0].y, stroke.size / 2, 0, Math.PI * 2);
+                 ctx.fill();
+             }
              return;
         }
         
@@ -153,7 +180,7 @@ const TreeDecorator: React.FC = () => {
         ctx.lineWidth = stroke.size;
         
         if (stroke.tool === 'ERASER') {
-            ctx.globalCompositeOperation = 'destination-out'; // Erase functionality
+            ctx.globalCompositeOperation = 'destination-out'; // Erase functionality - makes transparent
         } else {
             ctx.globalCompositeOperation = 'source-over';
         }
@@ -177,13 +204,13 @@ const TreeDecorator: React.FC = () => {
   }, [strokes, currentStroke, stickers]);
 
   useEffect(() => {
-    renderCanvas();
-  }, [renderCanvas]);
+    renderDrawingLayer();
+  }, [renderDrawingLayer]);
 
   // --- INPUT HANDLERS ---
 
   const getPointerPos = (e: React.MouseEvent | React.TouchEvent) => {
-    const canvas = canvasRef.current;
+    const canvas = drawCanvasRef.current; // Use top canvas for rect
     if (!canvas) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
     
@@ -196,7 +223,6 @@ const TreeDecorator: React.FC = () => {
       clientY = (e as React.MouseEvent).clientY;
     }
 
-    // Scale logic needed because canvas style width != internal width
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
@@ -207,16 +233,14 @@ const TreeDecorator: React.FC = () => {
   };
 
   const startAction = (e: React.MouseEvent | React.TouchEvent) => {
-    // Prevent default to stop scrolling on mobile while drawing
-    if ('touches' in e) {
-       // e.preventDefault(); // Note: might block scroll on page, tricky UX
-    }
+    // Prevent default scrolling on touch
+    // if ('touches' in e) e.preventDefault(); 
 
     const { x, y } = getPointerPos(e);
 
     if (activeTool === 'STICKER') {
         // Stamp Mode
-        setStickers(prev => [...prev, { x, y, emoji: selectedSticker, size: brushSize * 5 }]); // Scale sticker by brush size
+        setStickers(prev => [...prev, { x, y, emoji: selectedSticker, size: brushSize * 5 }]); 
     } else {
         // Draw Mode
         setIsDrawing(true);
@@ -255,7 +279,9 @@ const TreeDecorator: React.FC = () => {
   // --- ACTIONS ---
 
   const handleUndo = () => {
-      // Simple undo for strokes. Could extend to stickers if needed.
+      // Logic: undo last action regardless of type? Or separate?
+      // Simple LIFO based on what arrays have
+      // We don't track combined history here for simplicity, but we can prioritize strokes then stickers
       if (strokes.length > 0) {
           setStrokes(prev => prev.slice(0, -1));
       } else if (stickers.length > 0) {
@@ -264,19 +290,32 @@ const TreeDecorator: React.FC = () => {
   };
 
   const handleClear = () => {
-      if(confirm("Start over with a fresh tree?")) {
+      if(confirm("Clear your decorations? (The tree will stay)")) {
         setStrokes([]);
         setStickers([]);
       }
   };
 
   const handleDownload = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const bgCanvas = bgCanvasRef.current;
+    const drawCanvas = drawCanvasRef.current;
+    if (!bgCanvas || !drawCanvas) return;
     
+    // Create temp canvas to merge
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = CANVAS_WIDTH;
+    tempCanvas.height = CANVAS_HEIGHT;
+    const tCtx = tempCanvas.getContext('2d');
+    if (!tCtx) return;
+
+    // Draw Background
+    tCtx.drawImage(bgCanvas, 0, 0);
+    // Draw Decorations on top
+    tCtx.drawImage(drawCanvas, 0, 0);
+
     const link = document.createElement('a');
     link.download = `Christmas-Masterpiece-${Date.now()}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = tempCanvas.toDataURL('image/png');
     link.click();
   };
 
@@ -415,12 +454,21 @@ const TreeDecorator: React.FC = () => {
 
           {/* CANVAS AREA */}
           <div className="order-1 lg:order-2 relative group">
-             <div className="rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.15)] border-4 border-santa-dark/50 bg-gray-900 mx-auto transform transition-transform duration-300">
+             <div className="rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.15)] border-4 border-santa-dark/50 bg-gray-900 mx-auto transform transition-transform duration-300 relative">
+                 {/* Background Canvas (Tree) - Bottom Layer */}
                  <canvas
-                   ref={canvasRef}
+                   ref={bgCanvasRef}
                    width={CANVAS_WIDTH}
                    height={CANVAS_HEIGHT}
-                   className="w-full h-auto max-w-[500px] lg:max-w-[600px] cursor-crosshair touch-none block bg-slate-900"
+                   className="w-full h-auto max-w-[500px] lg:max-w-[600px] block bg-slate-900"
+                 />
+                 
+                 {/* Drawing Canvas (Strokes/Stickers) - Top Layer */}
+                 <canvas
+                   ref={drawCanvasRef}
+                   width={CANVAS_WIDTH}
+                   height={CANVAS_HEIGHT}
+                   className="absolute top-0 left-0 w-full h-full cursor-crosshair touch-none"
                    onMouseDown={startAction}
                    onMouseMove={moveAction}
                    onMouseUp={endAction}

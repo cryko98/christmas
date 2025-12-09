@@ -134,7 +134,8 @@ const App: React.FC = () => {
 
       <Navbar />
       
-      <main className="relative z-10 flex flex-col gap-24 pb-32">
+      {/* Removed gap-24 and added relative to allow dividers to overlap properly */}
+      <main className="relative z-10 flex flex-col gap-0 pb-32">
         <Hero />
         <SectionDivider />
 

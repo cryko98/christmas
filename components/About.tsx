@@ -11,7 +11,7 @@ const About: React.FC = () => {
               <div>
                 <span className="text-santa-red font-bold tracking-widest text-sm uppercase mb-2 block">The Lore & Mission</span>
                 <h2 className="text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
-                  The Story of <span className="text-santa-red italic">$SANTACOIN</span>
+                  The Story of <span className="text-santa-gold italic">$SANTACOIN</span>
                 </h2>
               </div>
               

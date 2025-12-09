@@ -50,7 +50,7 @@ const Hero: React.FC = () => {
             The Official Christmas Memecoin
           </span>
           <h1 className="text-7xl md:text-9xl font-serif text-white drop-shadow-lg leading-tight">
-            Merry <span className="text-gold-gradient italic pr-2">SantaCoin</span>
+            Merry <span className="text-gold-gradient italic pr-2">Christmas</span>
           </h1>
           <p className="mt-4 text-xl md:text-2xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed">
             The official currency of the North Pole on Solana. <br/>

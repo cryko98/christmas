@@ -11,6 +11,7 @@ import TreeDecorator from './components/TreeDecorator';
 import MemoryGame from './components/MemoryGame';
 import SantaChat from './components/SantaChat';
 import CozyFireplace from './components/CozyFireplace';
+import SectionDivider from './components/SectionDivider';
 import { GalleryItem } from './types';
 import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 
@@ -135,18 +136,29 @@ const App: React.FC = () => {
       
       <main className="relative z-10 flex flex-col gap-24 pb-32">
         <Hero />
-        
-        {/* About section moved here as requested */}
-        <About />
+        <SectionDivider />
 
-        {/* Fireplace moved after About */}
+        <About />
+        <SectionDivider />
+
         <CozyFireplace />
+        <SectionDivider />
 
         <TreeDecorator />
+        <SectionDivider />
+
         <ReindeerGame />
+        <SectionDivider />
+
         <MemoryGame />
+        <SectionDivider />
+
         <GiftGenerator />
+        <SectionDivider />
+
         <Santafy onAddToGallery={addToGallery} />
+        <SectionDivider />
+
         <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />
       </main>
 

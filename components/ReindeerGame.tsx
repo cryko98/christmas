@@ -448,7 +448,7 @@ const ReindeerGame: React.FC = () => {
                 Play & Earn (Points)
              </span>
              <h2 className="text-4xl md:text-5xl font-serif text-white drop-shadow-lg">
-                Reindeer <span className="text-santa-red italic">Gift Dash</span>
+                Reindeer <span className="text-santa-gold italic">Gift Dash</span>
              </h2>
              <p className="text-white/60 mt-2">Tap to fly. <span className="text-santa-gold">Collecting gifts speeds you up!</span></p>
           </div>

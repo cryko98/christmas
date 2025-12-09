@@ -12,7 +12,7 @@ const CozyFireplace: React.FC = () => {
                 Santa's Living Room
             </span>
             <h2 className="text-4xl md:text-5xl font-serif text-white drop-shadow-lg">
-                Cozy <span className="text-santa-red italic">Quarters</span>
+                Cozy <span className="text-santa-gold italic">Quarters</span>
             </h2>
         </div>
 

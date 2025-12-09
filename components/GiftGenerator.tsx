@@ -57,7 +57,7 @@ const GiftGenerator: React.FC = () => {
                 Ho Ho ... Huh?
              </span>
              <h2 className="text-4xl md:text-6xl font-serif text-gray-800 leading-tight">
-                Mystery <span className="text-santa-red italic">Gift Box</span>
+                Mystery <span className="text-santa-gold italic">Gift Box</span>
              </h2>
              <p className="text-gray-500 mt-4 max-w-lg mx-auto">
                 Click the box to reveal your absolutely useless but festive present.

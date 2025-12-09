@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
+import SectionDivider from './SectionDivider';
 
 // --- TYPES ---
 type ToolType = 'BRUSH' | 'ERASER' | 'STICKER';
@@ -328,7 +329,7 @@ const TreeDecorator: React.FC = () => {
              Workshop
           </span>
           <h2 className="text-4xl md:text-5xl font-serif text-white drop-shadow-lg">
-            Decorate <span className="text-santa-red italic">& Draw</span>
+            Decorate <span className="text-santa-gold italic">& Draw</span>
           </h2>
           <p className="text-white/60 mt-2">Use the pro tools to paint your unique Christmas Tree.</p>
         </div>

@@ -146,7 +146,7 @@ const MemoryGame: React.FC = () => {
              Mini Game
           </span>
           <h2 className="text-4xl md:text-5xl font-serif text-white drop-shadow-lg">
-            Gift <span className="text-santa-red italic">Match</span>
+            Gift <span className="text-santa-gold italic">Match</span>
           </h2>
           <p className="text-white/60 mt-2">Find the matching presents before the snow melts!</p>
         </div>

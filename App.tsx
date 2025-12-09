@@ -133,8 +133,8 @@ const App: React.FC = () => {
 
       <Navbar />
       
-      {/* Restored gap-24 for spacing since dividers are gone */}
-      <main className="relative z-10 flex flex-col gap-24 pb-32">
+      {/* Restored gap-24 for spacing. INCREASED Z-INDEX TO 20 to be above snow/fog */}
+      <main className="relative z-20 flex flex-col gap-24 pb-32">
         <Hero />
         
         <About />
@@ -154,7 +154,7 @@ const App: React.FC = () => {
         <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />
       </main>
 
-      {/* Atmospheric Fog Effect at Bottom */}
+      {/* Atmospheric Fog Effect at Bottom - z-index 5 is lower than main z-20 */}
       <div className="fog-container">
         <div className="fog-img"></div>
         <div className="fog-img-2"></div>

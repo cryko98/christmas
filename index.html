@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>The Official SantaCoin - $SANTACOIN</title>
     <link rel="icon" type="image/jpeg" href="https://pbs.twimg.com/media/G7wdiRaX0AAQyGa?format=jpg&name=small" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -84,6 +84,19 @@
         color: #333;
         overflow-x: hidden;
         min-height: 100vh;
+        /* Mobile scrolling fix */
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Global fix for touch interactions */
+      button, a, input, [role="button"] {
+        touch-action: manipulation;
+        cursor: pointer;
+      }
+
+      /* Force pointer events pass-through for effects */
+      .snow-container, .bg-pattern, .fog-container {
+        pointer-events: none !important;
       }
 
       /* Snow Animation */
@@ -93,7 +106,6 @@
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none;
         z-index: 1; /* Visible but behind main content */
       }
 
@@ -111,7 +123,6 @@
         width: 100%;
         height: 100%;
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        pointer-events: none;
         z-index: 0;
       }
 
@@ -141,7 +152,6 @@
         height: 300px;
         overflow: hidden;
         z-index: 5;
-        pointer-events: none;
       }
 
       .fog-img {

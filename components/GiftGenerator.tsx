@@ -26,7 +26,7 @@ const GiftGenerator: React.FC = () => {
   };
 
   return (
-    <section id="gift-gen" className="px-4 relative py-24">
+    <section id="gift-gen" className="px-4 relative py-24 z-20">
         {/* Custom Styles for this component */}
         <style>{`
             @keyframes shake-box {
@@ -50,7 +50,7 @@ const GiftGenerator: React.FC = () => {
       <div className="max-w-5xl mx-auto w-full text-center">
         
         {/* Changed to glass-card-dark */}
-        <div className="glass-card-dark p-12 md:p-20 relative overflow-visible min-h-[600px] flex flex-col items-center justify-center border border-white/10">
+        <div className="glass-card-dark p-12 md:p-20 relative overflow-visible min-h-[600px] flex flex-col items-center justify-center border border-white/10 z-20">
           
           {/* Header Area */}
           <div className="mb-12 relative z-10">
@@ -66,16 +66,18 @@ const GiftGenerator: React.FC = () => {
           </div>
 
           {/* Interactive Area */}
-          <div className="relative w-full flex flex-col items-center justify-center">
+          <div className="relative w-full flex flex-col items-center justify-center z-30">
             
             {/* IDLE / LOADING STATE */}
             {(status === GeneratorStatus.IDLE || status === GeneratorStatus.LOADING) && (
-              <div 
+              <button 
                 onClick={handleOpenGift}
-                className={`relative cursor-pointer group transition-all duration-500 transform active:scale-95
+                className={`relative cursor-pointer group transition-all duration-500 transform active:scale-95 bg-transparent border-none outline-none appearance-none
                     ${status === GeneratorStatus.LOADING ? 'animate-shake-box scale-110' : 'hover:scale-110'}
                 `}
-                style={{ touchAction: 'manipulation' }} // Optimize for touch
+                style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }} 
+                type="button"
+                aria-label="Open Gift"
               >
                  {/* Glow effect behind */}
                  <div className="absolute inset-0 bg-santa-gold/30 blur-3xl rounded-full scale-150 animate-pulse pointer-events-none"></div>
@@ -100,12 +102,12 @@ const GiftGenerator: React.FC = () => {
                         </span>
                     </div>
                  )}
-              </div>
+              </button>
             )}
 
             {/* SUCCESS STATE - REVEAL */}
             {status === GeneratorStatus.SUCCESS && giftImage && (
-               <div className="animate-in fade-in zoom-in duration-700 relative z-20 w-full flex flex-col items-center">
+               <div className="animate-in fade-in zoom-in duration-700 relative z-40 w-full flex flex-col items-center">
                   
                   {/* Burst Effect Background - Added pointer-events-none to prevent blocking clicks */}
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-200 to-santa-gold opacity-20 blur-3xl rounded-full scale-150 pointer-events-none"></div>
@@ -129,7 +131,7 @@ const GiftGenerator: React.FC = () => {
                   </div>
 
                   {/* Action Buttons - Added relative z-20 to ensure clickability */}
-                  <div className="flex flex-col md:flex-row justify-center gap-4 mt-12 relative z-20">
+                  <div className="flex flex-col md:flex-row justify-center gap-4 mt-12 relative z-50">
                       <button 
                         type="button"
                         onClick={reset}

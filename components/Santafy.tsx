@@ -14,6 +14,8 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
   const [twitterHandle, setTwitterHandle] = useState('');
   const [isPosted, setIsPosted] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
+  
+  // No longer needed for reliable mobile input, but keeping ref for reset
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,15 +104,13 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
       });
       
       setIsPosted(true);
-      // Optional: alert user it's demo mode if you want, but silent fallback is smoother
-      // alert("Posted to local wall! (Demo mode - refresh will clear)");
     } finally {
       setIsPosting(false);
     }
   };
 
   return (
-    <section id="santafy" className="px-4 relative">
+    <section id="santafy" className="px-4 relative z-20">
       <div className="max-w-6xl mx-auto">
         
         <div className="text-center mb-16">
@@ -123,7 +123,7 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
         <div className="grid md:grid-cols-2 gap-8 items-start">
           
           {/* UPLOAD CARD */}
-          <div className="glass-card-dark p-8 md:p-12 transition-all hover:bg-black/50">
+          <div className="glass-card-dark p-8 md:p-12 transition-all hover:bg-black/50 relative z-20">
             <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
                <span className="text-4xl font-serif text-white/20">01</span>
                <h3 className="text-xl font-bold text-white tracking-wide">Upload Photo</h3>
@@ -135,29 +135,34 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
                   <img src={preview} alt="Original" className="max-h-[300px] w-auto object-contain rounded shadow-2xl" />
                   <button 
                     onClick={() => { setPreview(null); setStatus(GeneratorStatus.IDLE); }}
-                    className="absolute top-4 right-4 bg-black/50 text-white rounded-full w-8 h-8 hover:bg-red-500 transition-colors flex items-center justify-center backdrop-blur-md"
+                    className="absolute top-4 right-4 bg-black/50 text-white rounded-full w-8 h-8 hover:bg-red-500 transition-colors flex items-center justify-center backdrop-blur-md z-30"
                   >
                     <i className="fa-solid fa-xmark"></i>
                   </button>
                 </div>
               ) : (
-                <div 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="cursor-pointer text-center p-10 w-full h-full flex flex-col items-center justify-center"
-                >
+                <div className="w-full h-full relative flex flex-col items-center justify-center p-10">
                   <i className="fa-solid fa-image text-4xl text-white/20 mb-4 group-hover:text-santa-gold transition-colors"></i>
-                  <p className="text-lg font-medium text-white/60">Select Image</p>
+                  <p className="text-lg font-medium text-white/60">Tap to Select Image</p>
+                  
+                  {/* RELIABLE MOBILE INPUT FIX: Transparent input covering the entire area */}
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleFileChange} 
+                    accept="image/*" 
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"
+                    title="Upload an image"
+                  />
                 </div>
               )}
-              
-              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
             </div>
 
             {preview && status !== GeneratorStatus.SUCCESS && (
                <button 
                 onClick={handleSantafy}
                 disabled={status === GeneratorStatus.LOADING}
-                className={`mt-8 w-full py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all ${
+                className={`mt-8 w-full py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all relative z-30 ${
                   status === GeneratorStatus.LOADING 
                   ? 'bg-white/10 text-white/50 cursor-not-allowed' 
                   : 'bg-gradient-to-r from-santa-gold to-yellow-400 text-black hover:shadow-glow'
@@ -169,7 +174,7 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
           </div>
 
           {/* RESULT CARD */}
-          <div className="glass-card-dark p-8 md:p-12 border-santa-gold/30">
+          <div className="glass-card-dark p-8 md:p-12 border-santa-gold/30 relative z-20">
             <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
                <span className="text-4xl font-serif text-santa-gold/50">02</span>
                <h3 className="text-xl font-bold text-white tracking-wide">Your Result</h3>
@@ -194,7 +199,7 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
             </div>
 
             {resultImage && (
-               <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+               <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 relative z-30">
                  
                  <div className="space-y-2">
                     <label className="text-santa-gold text-xs font-bold uppercase tracking-widest ml-4 block opacity-80">
@@ -256,12 +261,6 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
                       <span>Download</span>
                     </a>
                  </div>
-                 
-                 {isPosted && (
-                    <p className="text-center text-green-400 text-xs uppercase tracking-widest animate-pulse">
-                      See it in the Gallery below!
-                    </p>
-                 )}
                </div>
             )}
           </div>

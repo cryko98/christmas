@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { GalleryItem } from '../types';
-import { supabase } from '../services/supabaseClient';
+import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
 
 interface CommunityWallProps {
   items: GalleryItem[];
@@ -23,15 +23,20 @@ const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
     }
 
     setIsUploading(true);
+    const finalHandle = handle || '@AnonymousElf';
 
     try {
+        if (!isSupabaseConfigured) {
+            throw new Error("Supabase not configured (Demo Mode)");
+        }
+
         // 1. Upload to Supabase Storage
         // Generate a unique filename: timestamp_random_cleanfilename
         const fileExt = file.name.split('.').pop();
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
         const filePath = `${fileName}`;
 
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
             .from('christmas-images') // Make sure this bucket exists in Supabase
             .upload(filePath, file);
 
@@ -43,8 +48,6 @@ const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
             .getPublicUrl(filePath);
 
         // 3. Insert into Database
-        const finalHandle = handle || '@AnonymousElf';
-        
         const { data: insertData, error: insertError } = await supabase
             .from('gallery') // Make sure this table exists
             .insert([
@@ -61,22 +64,28 @@ const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
         if (insertData && insertData.length > 0) {
              onUpload(insertData[0] as GalleryItem);
         } else {
-             // Fallback if select not returned
-             onUpload({
-                 url: publicUrl,
-                 handle: finalHandle
-             });
+             onUpload({ url: publicUrl, handle: finalHandle });
         }
+
+    } catch (error) {
+        console.warn('Backend error or Demo Mode. Using local fallback:', error);
         
+        // Demo Fallback: create a local object URL to display the image immediately
+        const objectUrl = URL.createObjectURL(file);
+        
+        onUpload({
+            url: objectUrl,
+            handle: finalHandle,
+            id: 'local-' + Date.now()
+        });
+
+        // alert("Added to wall! (Demo mode)");
+
+    } finally {
+        setIsUploading(false);
         setHandle('');
         // Reset file input
         if (fileInputRef.current) fileInputRef.current.value = '';
-
-    } catch (error) {
-        console.error('Error uploading to gallery:', error);
-        alert('Failed to upload image. Please try again.');
-    } finally {
-        setIsUploading(false);
     }
   };
 

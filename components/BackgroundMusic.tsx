@@ -4,9 +4,10 @@ const BackgroundMusic: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // STABLE SOURCE: Wikimedia Commons (Kevin MacLeod - Jingle Bells)
-  const AUDIO_URL = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Jingle_Bells_by_Kevin_MacLeod.ogg"; 
+  // Exact Supabase URL provided
+  const AUDIO_URL = "https://wkkeyyrknmnynlcefugq.supabase.co/storage/v1/object/public/jinglebells/jingle-bells-444574.mp3"; 
 
+  // Initialize volume
   useEffect(() => {
     if (audioRef.current) {
         audioRef.current.volume = 0.5;
@@ -14,15 +15,16 @@ const BackgroundMusic: React.FC = () => {
   }, []);
 
   const toggleMusic = () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
 
     if (isPlaying) {
-      audioRef.current.pause();
+      audio.pause();
       setIsPlaying(false);
     } else {
-      // FIXED: Call play() immediately to capture the user interaction event.
-      // Removed async/await and load() calls which were causing the "blocked" error.
-      const playPromise = audioRef.current.play();
+      // Robust Promise-based play execution
+      // This is strictly triggered by user click, satisfying browser policies
+      const playPromise = audio.play();
       
       if (playPromise !== undefined) {
         playPromise
@@ -30,9 +32,7 @@ const BackgroundMusic: React.FC = () => {
             setIsPlaying(true);
           })
           .catch((error) => {
-            console.error("Playback failed:", error);
-            // Error is logged but suppressed from UI (no alert).
-            // User can try clicking again immediately.
+            console.error("Playback prevented by browser:", error);
             setIsPlaying(false);
           });
       }
@@ -40,7 +40,8 @@ const BackgroundMusic: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-[9999] flex flex-col items-start gap-2 pointer-events-auto">
+    <div className="fixed bottom-6 left-6 z-[9999] pointer-events-auto">
+       {/* Hidden Audio Element */}
        <audio 
          ref={audioRef} 
          src={AUDIO_URL} 
@@ -48,33 +49,41 @@ const BackgroundMusic: React.FC = () => {
          preload="auto"
        />
 
+       {/* Control Button */}
        <button
         onClick={toggleMusic}
         className={`
             relative w-14 h-14 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.4)] 
             flex items-center justify-center transition-all duration-300 transform active:scale-95
-            border-2 border-white/20 cursor-pointer
+            border-2 border-white/20 cursor-pointer group
             ${isPlaying 
                 ? 'bg-gradient-to-br from-green-600 to-green-800 animate-pulse-slow scale-110' 
                 : 'bg-gradient-to-br from-gray-700 to-gray-900 hover:scale-105'}
         `}
-        aria-label={isPlaying ? "Mute Music" : "Play Music"}
+        aria-label={isPlaying ? "Pause Music" : "Play Music"}
         style={{ touchAction: 'manipulation' }}
       >
         {isPlaying && (
             <span className="absolute inset-0 rounded-full border border-green-400/50 animate-ping opacity-40"></span>
         )}
         
-        <i className={`fa-solid text-xl text-white transition-all duration-300 ${isPlaying ? 'fa-music animate-spin-slow' : 'fa-volume-xmark'}`}></i>
+        {/* Dynamic Icon */}
+        <i className={`fa-solid text-xl text-white transition-all duration-300 ${isPlaying ? 'fa-music animate-spin-slow' : 'fa-play pl-1'}`}></i>
       </button>
       
+      {/* Tooltip / Call to Action (Only shows when paused) */}
       {!isPlaying && (
-        <span 
+        <div 
           onClick={toggleMusic}
-          className="text-[10px] font-bold text-santa-dark bg-santa-gold/90 px-3 py-1 rounded-full shadow-lg backdrop-blur-sm animate-bounce cursor-pointer border border-white/20 whitespace-nowrap"
+          className="absolute left-16 top-1/2 -translate-y-1/2 ml-2 cursor-pointer animate-in slide-in-from-left-2 fade-in duration-500"
         >
-            Play Music 🎵
-        </span>
+             <div className="bg-black/80 text-white text-[10px] font-bold px-3 py-1.5 rounded-full whitespace-nowrap border border-white/20 shadow-lg relative flex items-center gap-2">
+                <span>Play Music</span>
+                <span>🎵</span>
+                {/* Tiny arrow pointing to button */}
+                <div className="absolute top-1/2 -left-1 w-2 h-2 bg-black/80 border-l border-b border-white/20 transform -translate-y-1/2 rotate-45"></div>
+             </div>
+        </div>
       )}
     </div>
   );

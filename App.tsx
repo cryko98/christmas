@@ -18,6 +18,7 @@ import { supabase, isSupabaseConfigured } from './services/supabaseClient';
 const App: React.FC = () => {
   // Shared state for the gallery
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [gameStarted, setGameStarted] = useState(false); // Welcome Screen State
 
   // Fetch items from Supabase on load
   useEffect(() => {
@@ -51,43 +52,57 @@ const App: React.FC = () => {
   };
 
   const deleteFromGallery = async (id: number | string) => {
-    // 1. Optimistic UI update (remove immediately from view)
     setGalleryItems(prev => prev.filter(item => item.id !== id));
-
-    // 2. If it's a real backend item (number ID) and Supabase is working, delete from DB
     if (isSupabaseConfigured && typeof id === 'number') {
-        const { error } = await supabase
-            .from('gallery')
-            .delete()
-            .eq('id', id);
-        
-        if (error) {
-            console.error("Error deleting from backend:", error);
-            // Optionally revert UI change here if needed, but for a memecoin site, nice-to-have
-        }
+        const { error } = await supabase.from('gallery').delete().eq('id', id);
+        if (error) console.error("Error deleting from backend:", error);
     }
   };
 
-  // Generate Snow - Reduced count for mobile performance
   const snowflakes = useMemo(() => {
-    // Reduced from 150 to 80 to prevent blocking input thread on weak mobile devices
     return Array.from({ length: 80 }).map((_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
-      animationDuration: `${Math.random() * 8 + 5}s`, // Varied speed
+      animationDuration: `${Math.random() * 8 + 5}s`,
       animationDelay: `-${Math.random() * 10}s`,
       opacity: Math.random() * 0.7 + 0.3,
-      size: `${Math.random() * 6 + 2}px` // varied sizes
+      size: `${Math.random() * 6 + 2}px`
     }));
   }, []);
 
   return (
     <div className="min-h-screen font-sans text-white relative overflow-x-hidden">
       
-      {/* Background Pattern - z-0 */}
+      {/* WELCOME OVERLAY */}
+      {!gameStarted && (
+        <div className="fixed inset-0 z-[10000] bg-santa-dark flex flex-col items-center justify-center p-4 transition-opacity duration-700">
+            <div className="absolute inset-0 bg-pattern opacity-20"></div>
+            <div className="relative z-10 text-center animate-in zoom-in duration-500">
+                <img 
+                  src="https://pbs.twimg.com/media/G7wdiRaX0AAQyGa?format=jpg&name=small" 
+                  alt="Logo" 
+                  className="w-24 h-24 mx-auto rounded-full border-4 border-santa-gold shadow-[0_0_30px_rgba(253,185,49,0.5)] mb-6 animate-bounce"
+                />
+                <h1 className="text-4xl md:text-6xl font-serif text-white mb-2">$SANTACOIN</h1>
+                <p className="text-santa-gold uppercase tracking-[0.3em] text-xs mb-8">Solana Edition</p>
+                
+                <button 
+                    onClick={() => setGameStarted(true)}
+                    className="group relative px-10 py-4 bg-white text-santa-red font-bold text-xl rounded-full shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-105 transition-transform"
+                >
+                    <span className="relative z-10 flex items-center gap-3">
+                        ENTER NORTH POLE <i className="fa-solid fa-sleigh"></i>
+                    </span>
+                    <div className="absolute inset-0 rounded-full bg-santa-gold blur opacity-0 group-hover:opacity-40 transition-opacity"></div>
+                </button>
+            </div>
+        </div>
+      )}
+
+      {/* Background Pattern */}
       <div className="bg-pattern fixed inset-0 z-0"></div>
 
-      {/* Global Christmas Lights Decoration (Fixed Top) - z-30 (Above background, below navbar) */}
+      {/* Global Christmas Lights Decoration */}
       <div className="fixed top-0 left-0 w-full z-30 pointer-events-none fixed-lights-container h-12 hidden md:block">
          <div className="w-full h-full flex justify-between px-2">
             {Array.from({ length: 30 }).map((_, i) => {
@@ -95,9 +110,7 @@ const App: React.FC = () => {
                  const color = colors[i % colors.length];
                  return (
                    <div key={i} className="relative flex flex-col items-center" style={{ width: '3.33%' }}>
-                      {/* Wire */}
                       <div className="w-full h-6 border-b-2 border-gray-800 rounded-[50%] absolute -top-4"></div>
-                      {/* Bulb */}
                       <div 
                         className="w-3 h-4 rounded-full mt-2 animate-pulse"
                         style={{ 
@@ -113,7 +126,7 @@ const App: React.FC = () => {
          </div>
       </div>
 
-      {/* Snow - z-1 */}
+      {/* Snow */}
       <div className="snow-container pointer-events-none" style={{ zIndex: 1 }}>
         {snowflakes.map((flake) => (
           <div
@@ -132,45 +145,34 @@ const App: React.FC = () => {
         ))}
       </div>
 
-      {/* Navbar - z-100 (Handled in component) */}
       <Navbar />
       
-      {/* Main Content - z-20 (Definitely above snow/fog/bg) */}
       <main className="relative z-20 flex flex-col gap-24 pb-32">
         <Hero />
-        
         <About />
-        
         <CozyFireplace />
-        
         <TreeDecorator />
-        
         <ReindeerGame />
-        
         <MemoryGame />
-        
         <GiftGenerator />
-        
         <Santafy onAddToGallery={addToGallery} />
-        
         <CommunityWall items={galleryItems} onUpload={addToGallery} onDelete={deleteFromGallery} />
       </main>
 
-      {/* Atmospheric Fog Effect at Bottom - z-5 (Below content) */}
       <div className="fog-container" style={{ zIndex: 5 }}>
         <div className="fog-img"></div>
         <div className="fog-img-2"></div>
       </div>
 
-      {/* Footer - z-20 */}
       <div className="relative z-20">
         <Footer />
       </div>
       
-      {/* Floating Elements - z-50 & z-100 */}
       <div className="relative z-50">
         <SantaChat />
       </div>
+      
+      {/* Updated: No autoStart prop to strictly follow manual playback policy */}
       <BackgroundMusic />
     </div>
   );

@@ -171,9 +171,18 @@ const SantaChat: React.FC = () => {
         {/* Glow Ring */}
         <span className="absolute inset-0 rounded-full border border-white/30 animate-ping opacity-20"></span>
         
-        {/* Santa Icon */}
-        <div className="text-3xl text-white drop-shadow-md">
-            <i className="fa-solid fa-sleigh"></i>
+        {/* Santa Icon Image */}
+        <div className="w-10 h-10 overflow-hidden relative drop-shadow-md">
+            <img 
+                src="https://img.icons8.com/color/96/santa.png" 
+                alt="Chat with Santa"
+                className="w-full h-full object-cover" 
+            />
+        </div>
+
+        {/* "Chat" Badge for explicit clarity */}
+        <div className="absolute -top-1 -right-1 bg-santa-gold text-santa-dark text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm border border-white/30 animate-bounce">
+            CHAT
         </div>
 
         {/* Tooltip / Callout */}
@@ -182,7 +191,7 @@ const SantaChat: React.FC = () => {
                 isHovered ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-75 translate-x-4 pointer-events-none'
             }`}
         >
-            Chat with Santa!
+            Ask me anything!
             {/* Tiny Triangle */}
             <div className="absolute top-1/2 -right-1 w-2 h-2 bg-white transform -translate-y-1/2 rotate-45"></div>
         </div>

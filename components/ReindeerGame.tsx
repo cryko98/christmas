@@ -398,8 +398,16 @@ const ReindeerGame: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+        // --- CRITICAL FIX FOR CHAT INPUT ---
+        // If the user is typing in an input field (like the Santa Chat or Upload forms),
+        // we must NOT intercept the Space key.
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+            return;
+        }
+
         if (e.code === 'Space') {
-            e.preventDefault();
+            e.preventDefault(); // Only prevent scroll if we are playing the game
             if (gameState === 'PLAYING') handleInput();
             if (gameState === 'START' || gameState === 'GAME_OVER' || gameState === 'VICTORY') resetGame();
         }

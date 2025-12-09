@@ -50,7 +50,7 @@ const About: React.FC = () => {
             <div className="relative">
                <div className="absolute inset-0 bg-gradient-to-tr from-santa-red to-santa-gold opacity-20 rounded-3xl blur-2xl transform rotate-3"></div>
                <img 
-                 src="https://images.unsplash.com/photo-1545622966-01870199d75b?q=80&w=1000&auto=format&fit=crop" 
+                 src="https://pbs.twimg.com/media/G7whhgxWQAASpfP?format=jpg&name=medium" 
                  alt="Santa reading the blockchain" 
                  className="relative z-10 w-full rounded-2xl shadow-2xl transition-all duration-700 hover:scale-[1.02] border border-white/10"
                />

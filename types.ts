@@ -23,6 +23,8 @@ export interface GeneratedImage {
 }
 
 export interface GalleryItem {
+  id?: number | string;
   url: string;
   handle: string;
+  created_at?: string;
 }

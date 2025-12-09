@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { GeneratorStatus, GalleryItem } from '../types';
 import { santafyImage } from '../services/geminiService';
+import { supabase } from '../services/supabaseClient';
 
 interface SantafyProps {
   onAddToGallery: (item: GalleryItem) => void;
@@ -12,6 +13,7 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [twitterHandle, setTwitterHandle] = useState('');
   const [isPosted, setIsPosted] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,13 +45,54 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
     }
   };
 
-  const handlePostToWall = () => {
-    if (resultImage) {
-      onAddToGallery({
-        url: resultImage,
-        handle: twitterHandle || '@AnonymousElf'
-      });
+  const handlePostToWall = async () => {
+    if (!resultImage) return;
+    
+    setIsPosting(true);
+    try {
+      // 1. Convert Base64 result to Blob for upload
+      const response = await fetch(resultImage);
+      const blob = await response.blob();
+      
+      const fileName = `santafy_${Date.now()}_${Math.random().toString(36).substring(7)}.png`;
+      
+      // 2. Upload to Supabase Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('christmas-images')
+        .upload(fileName, blob);
+        
+      if (uploadError) throw uploadError;
+
+      // 3. Get Public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('christmas-images')
+        .getPublicUrl(fileName);
+
+      // 4. Insert into Database
+      const handle = twitterHandle || '@SantafiedElf';
+      const { data: insertData, error: insertError } = await supabase
+        .from('gallery')
+        .insert([{ url: publicUrl, handle: handle }])
+        .select();
+        
+      if (insertError) throw insertError;
+
+      // 5. Update UI
+      if (insertData && insertData.length > 0) {
+        onAddToGallery(insertData[0] as GalleryItem);
+      } else {
+        onAddToGallery({
+          url: publicUrl,
+          handle: handle
+        });
+      }
+
       setIsPosted(true);
+    } catch (error) {
+      console.error("Error posting to wall:", error);
+      alert("Failed to post to the wall. Check the console or try again.");
+    } finally {
+      setIsPosting(false);
     }
   };
 
@@ -154,7 +197,7 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
                             onChange={(e) => setTwitterHandle(e.target.value)}
                             placeholder="@username"
                             className="bg-transparent border-none outline-none text-white px-4 flex-1 placeholder-white/20 font-medium h-full"
-                            disabled={isPosted}
+                            disabled={isPosted || isPosting}
                         />
                     </div>
                  </div>
@@ -162,11 +205,13 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
                  <div className="grid grid-cols-2 gap-4">
                     <button 
                       onClick={handlePostToWall}
-                      disabled={isPosted}
+                      disabled={isPosted || isPosting}
                       className={`relative overflow-hidden py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-300 transform active:scale-95 ${
                         isPosted 
                           ? 'bg-green-600 text-white shadow-none cursor-default border border-green-500' 
-                          : 'bg-white text-santa-dark hover:bg-gray-100 shadow-lg hover:shadow-glow'
+                          : isPosting 
+                            ? 'bg-gray-500 cursor-not-allowed'
+                            : 'bg-white text-santa-dark hover:bg-gray-100 shadow-lg hover:shadow-glow'
                       }`}
                     >
                       <div className="flex items-center justify-center gap-2">
@@ -174,6 +219,11 @@ const Santafy: React.FC<SantafyProps> = ({ onAddToGallery }) => {
                           <>
                             <i className="fa-solid fa-check-circle text-lg animate-bounce"></i>
                             <span>Posted!</span>
+                          </>
+                        ) : isPosting ? (
+                          <>
+                            <i className="fa-solid fa-spinner fa-spin"></i>
+                            <span>Saving...</span>
                           </>
                         ) : (
                           <>

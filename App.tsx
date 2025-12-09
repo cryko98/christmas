@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -7,10 +7,29 @@ import Santafy from './components/Santafy';
 import CommunityWall from './components/CommunityWall';
 import Footer from './components/Footer';
 import { GalleryItem } from './types';
+import { supabase } from './services/supabaseClient';
 
 const App: React.FC = () => {
   // Shared state for the gallery
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+
+  // Fetch items from Supabase on load
+  useEffect(() => {
+    const fetchGallery = async () => {
+      const { data, error } = await supabase
+        .from('gallery')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching gallery:', error);
+      } else if (data) {
+        setGalleryItems(data as GalleryItem[]);
+      }
+    };
+
+    fetchGallery();
+  }, []);
 
   const addToGallery = (item: GalleryItem) => {
     setGalleryItems(prev => [item, ...prev]);

@@ -1,6 +1,18 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Initialize lazily to avoid top-level crash if env vars are missing
+let aiInstance: GoogleGenAI | null = null;
+
+const getAI = () => {
+  if (!aiInstance) {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      throw new Error("API_KEY is not configured!");
+    }
+    aiInstance = new GoogleGenAI({ apiKey });
+  }
+  return aiInstance;
+};
 
 // Constants
 const MODEL_NAME = 'gemini-2.5-flash-image';
@@ -41,6 +53,7 @@ const FUNNY_ITEMS = [
  */
 export const generateRandomGift = async (): Promise<string> => {
   try {
+    const ai = getAI();
     // Select a random item on the client side to ensure variety
     const randomItem = FUNNY_ITEMS[Math.floor(Math.random() * FUNNY_ITEMS.length)];
 
@@ -67,6 +80,7 @@ export const generateRandomGift = async (): Promise<string> => {
  */
 export const santafyImage = async (base64Image: string): Promise<string> => {
   try {
+    const ai = getAI();
     const prompt = "Edit this image: Put a fluffy red Santa hat on the main subject/character. Make the background festive with Christmas lights and snow. Keep the subject recognizable but stylized.";
 
     const response = await ai.models.generateContent({

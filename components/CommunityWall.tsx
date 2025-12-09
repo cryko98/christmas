@@ -1,27 +1,82 @@
 import React, { useState, useRef } from 'react';
 import { GalleryItem } from '../types';
+import { supabase } from '../services/supabaseClient';
 
 interface CommunityWallProps {
   items: GalleryItem[];
-  onUpload: (item: GalleryItem) => void;
+  onUpload: (item: GalleryItem) => void; // Used for immediate UI update only
 }
 
 const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [handle, setHandle] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onUpload({
-          url: reader.result as string,
-          handle: handle || '@AnonymousElf'
-        });
-        setHandle(''); 
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+        alert('Please upload an image file.');
+        return;
+    }
+
+    setIsUploading(true);
+
+    try {
+        // 1. Upload to Supabase Storage
+        // Generate a unique filename: timestamp_random_cleanfilename
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('christmas-images') // Make sure this bucket exists in Supabase
+            .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        // 2. Get Public URL
+        const { data: { publicUrl } } = supabase.storage
+            .from('christmas-images')
+            .getPublicUrl(filePath);
+
+        // 3. Insert into Database
+        const finalHandle = handle || '@AnonymousElf';
+        
+        const { data: insertData, error: insertError } = await supabase
+            .from('gallery') // Make sure this table exists
+            .insert([
+                { 
+                    url: publicUrl, 
+                    handle: finalHandle 
+                }
+            ])
+            .select();
+
+        if (insertError) throw insertError;
+
+        // 4. Update UI
+        if (insertData && insertData.length > 0) {
+             onUpload(insertData[0] as GalleryItem);
+        } else {
+             // Fallback if select not returned
+             onUpload({
+                 url: publicUrl,
+                 handle: finalHandle
+             });
+        }
+        
+        setHandle('');
+        // Reset file input
+        if (fileInputRef.current) fileInputRef.current.value = '';
+
+    } catch (error) {
+        console.error('Error uploading to gallery:', error);
+        alert('Failed to upload image. Please try again.');
+    } finally {
+        setIsUploading(false);
     }
   };
 
@@ -131,14 +186,23 @@ const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
                       onChange={(e) => setHandle(e.target.value)}
                       placeholder="Enter your X handle..."
                       className="bg-transparent border-none text-white placeholder-white/30 outline-none w-full font-medium"
+                      disabled={isUploading}
                     />
                   </div>
                   <button
                     onClick={triggerUpload}
-                    className="w-full sm:w-auto bg-gradient-to-r from-santa-red to-red-700 text-white px-8 py-3 rounded-full font-bold text-sm uppercase tracking-widest hover:shadow-[0_0_20px_rgba(212,36,38,0.6)] transition-all transform hover:-translate-y-0.5 border border-white/10 whitespace-nowrap"
+                    disabled={isUploading}
+                    className={`w-full sm:w-auto px-8 py-3 rounded-full font-bold text-sm uppercase tracking-widest transition-all transform border border-white/10 whitespace-nowrap
+                        ${isUploading 
+                            ? 'bg-gray-600 cursor-not-allowed' 
+                            : 'bg-gradient-to-r from-santa-red to-red-700 text-white hover:shadow-[0_0_20px_rgba(212,36,38,0.6)] hover:-translate-y-0.5'}
+                    `}
                   >
-                    <i className="fa-solid fa-cloud-arrow-up mr-2"></i>
-                    Add Photo
+                    {isUploading ? (
+                        <span className="flex items-center"><i className="fa-solid fa-spinner fa-spin mr-2"></i> Uploading...</span>
+                    ) : (
+                        <span className="flex items-center"><i className="fa-solid fa-cloud-arrow-up mr-2"></i> Add Photo</span>
+                    )}
                   </button>
                 </div>
                 
@@ -148,6 +212,7 @@ const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
                   className="hidden"
                   accept="image/*"
                   onChange={handleFileUpload}
+                  disabled={isUploading}
                 />
               </div>
 
@@ -160,7 +225,7 @@ const CommunityWall: React.FC<CommunityWallProps> = ({ items, onUpload }) => {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12 px-4 pb-8">
                    {items.map((item, idx) => (
-                      <FestiveFrame key={idx} item={item} index={idx} />
+                      <FestiveFrame key={item.id || idx} item={item} index={idx} />
                    ))}
                 </div>
               )}
@@ -195,6 +260,7 @@ const FestiveFrame: React.FC<{ item: GalleryItem; index: number }> = ({ item, in
                   src={item.url} 
                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300" 
                   alt="Member" 
+                  loading="lazy"
                 />
                 
                 {/* Shiny glass overlay effect */}

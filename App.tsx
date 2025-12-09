@@ -112,12 +112,12 @@ const App: React.FC = () => {
          </div>
       </div>
 
-      {/* Heavy Snow */}
-      <div className="snow-container">
+      {/* Heavy Snow - CRITICAL: pointer-events-none added to individual flakes */}
+      <div className="snow-container pointer-events-none">
         {snowflakes.map((flake) => (
           <div
             key={flake.id}
-            className="absolute rounded-full bg-white blur-[1px]"
+            className="absolute rounded-full bg-white blur-[1px] pointer-events-none"
             style={{
               left: flake.left,
               top: '-10px',

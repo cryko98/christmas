@@ -234,7 +234,7 @@ const TreeDecorator: React.FC = () => {
 
   const startAction = (e: React.MouseEvent | React.TouchEvent) => {
     // Prevent default scrolling on touch
-    // if ('touches' in e) e.preventDefault(); 
+    if ('touches' in e) e.preventDefault(); 
 
     const { x, y } = getPointerPos(e);
 
@@ -268,7 +268,8 @@ const TreeDecorator: React.FC = () => {
     });
   };
 
-  const endAction = () => {
+  const endAction = (e: React.MouseEvent | React.TouchEvent) => {
+    if ('touches' in e) e.preventDefault();
     if (isDrawing && currentStroke) {
         setStrokes(prev => [...prev, currentStroke]);
         setCurrentStroke(null);
@@ -454,14 +455,14 @@ const TreeDecorator: React.FC = () => {
           </div>
 
           {/* CANVAS AREA */}
-          <div className="order-1 lg:order-2 relative group">
-             <div className="rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.15)] border-4 border-santa-dark/50 bg-gray-900 mx-auto transform transition-transform duration-300 relative">
+          <div className="order-1 lg:order-2 relative group touch-none">
+             <div className="rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.15)] border-4 border-santa-dark/50 bg-gray-900 mx-auto transform transition-transform duration-300 relative touch-none">
                  {/* Background Canvas (Tree) - Bottom Layer */}
                  <canvas
                    ref={bgCanvasRef}
                    width={CANVAS_WIDTH}
                    height={CANVAS_HEIGHT}
-                   className="w-full h-auto max-w-[500px] lg:max-w-[600px] block bg-slate-900"
+                   className="w-full h-auto max-w-[500px] lg:max-w-[600px] block bg-slate-900 touch-none"
                  />
                  
                  {/* Drawing Canvas (Strokes/Stickers) - Top Layer */}
@@ -470,6 +471,7 @@ const TreeDecorator: React.FC = () => {
                    width={CANVAS_WIDTH}
                    height={CANVAS_HEIGHT}
                    className="absolute top-0 left-0 w-full h-full cursor-crosshair touch-none"
+                   style={{ touchAction: 'none' }}
                    onMouseDown={startAction}
                    onMouseMove={moveAction}
                    onMouseUp={endAction}

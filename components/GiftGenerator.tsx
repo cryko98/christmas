@@ -61,7 +61,7 @@ const GiftGenerator: React.FC = () => {
                 Mystery <span className="text-santa-gold italic">Gift Box</span>
              </h2>
              <p className="text-gray-300 mt-4 max-w-lg mx-auto">
-                Click the box to reveal your absolutely useless but festive present.
+                Tap the box to reveal your absolutely useless but festive present.
              </p>
           </div>
 
@@ -72,28 +72,29 @@ const GiftGenerator: React.FC = () => {
             {(status === GeneratorStatus.IDLE || status === GeneratorStatus.LOADING) && (
               <div 
                 onClick={handleOpenGift}
-                className={`relative cursor-pointer group transition-all duration-500 transform
+                className={`relative cursor-pointer group transition-all duration-500 transform active:scale-95
                     ${status === GeneratorStatus.LOADING ? 'animate-shake-box scale-110' : 'hover:scale-110'}
                 `}
+                style={{ touchAction: 'manipulation' }} // Optimize for touch
               >
                  {/* Glow effect behind */}
-                 <div className="absolute inset-0 bg-santa-gold/30 blur-3xl rounded-full scale-150 animate-pulse"></div>
+                 <div className="absolute inset-0 bg-santa-gold/30 blur-3xl rounded-full scale-150 animate-pulse pointer-events-none"></div>
                  
                  {/* 3D CSS Box Representation or High Quality Emoji */}
-                 <div className="relative z-10 text-[150px] md:text-[200px] leading-none filter drop-shadow-2xl">
+                 <div className="relative z-10 text-[150px] md:text-[200px] leading-none filter drop-shadow-2xl select-none">
                     🎁
                  </div>
                  
                  {/* Click Hint */}
                  <div className={`mt-8 transition-opacity duration-300 ${status === GeneratorStatus.LOADING ? 'opacity-0' : 'opacity-100'}`}>
-                    <span className="bg-santa-red text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm shadow-lg group-hover:bg-red-600 transition-colors">
-                        Click to Unwrap
+                    <span className="bg-santa-red text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm shadow-lg group-hover:bg-red-600 transition-colors pointer-events-none">
+                        Tap to Unwrap
                     </span>
                  </div>
 
                  {/* Loading Text */}
                  {status === GeneratorStatus.LOADING && (
-                    <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                    <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none">
                         <span className="text-santa-red font-bold animate-pulse text-lg tracking-widest uppercase">
                             Rummaging through Santa's Sack...
                         </span>
@@ -112,7 +113,7 @@ const GiftGenerator: React.FC = () => {
                   {/* Polaroid Card */}
                   <div className="bg-white p-4 pb-12 shadow-2xl rotate-2 transform transition-transform hover:rotate-0 duration-500 max-w-md w-full mx-auto relative border border-gray-100 z-10">
                       {/* Tape Effect */}
-                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-white/50 backdrop-blur-sm border border-white/20 transform -rotate-1 shadow-sm z-10"></div>
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-white/50 backdrop-blur-sm border border-white/20 transform -rotate-1 shadow-sm z-10 pointer-events-none"></div>
 
                       <div className="aspect-square bg-gray-50 overflow-hidden mb-6 border-2 border-gray-100">
                           <img src={giftImage} alt="Funny Gift" className="w-full h-full object-cover" />
@@ -132,14 +133,14 @@ const GiftGenerator: React.FC = () => {
                       <button 
                         type="button"
                         onClick={reset}
-                        className="bg-black text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-gray-900 transition-colors shadow-lg cursor-pointer border border-white/20"
+                        className="bg-black text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-gray-900 transition-colors shadow-lg cursor-pointer border border-white/20 active:scale-95 touch-manipulation"
                       >
                         Open Another
                       </button>
                       <a 
                         href={giftImage}
                         download="my-crappy-gift.png"
-                        className="bg-white text-santa-red border border-santa-red/20 px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-red-50 transition-colors shadow-sm cursor-pointer inline-block"
+                        className="bg-white text-santa-red border border-santa-red/20 px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-red-50 transition-colors shadow-sm cursor-pointer inline-block active:scale-95 touch-manipulation"
                       >
                         Download
                       </a>
@@ -151,7 +152,7 @@ const GiftGenerator: React.FC = () => {
              {status === GeneratorStatus.ERROR && (
                 <div className="text-center relative z-20">
                     <p className="text-santa-red text-xl mb-4">The elves dropped the present. Try again.</p>
-                    <button onClick={reset} className="underline text-gray-300 hover:text-white">Reset</button>
+                    <button onClick={reset} className="underline text-gray-300 hover:text-white cursor-pointer p-4">Reset</button>
                 </div>
              )}
 

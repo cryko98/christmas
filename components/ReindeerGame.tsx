@@ -396,6 +396,15 @@ const ReindeerGame: React.FC = () => {
     }
   }, [gameState]);
 
+  // Touch Handler for Mobile
+  const handleTouch = useCallback((e: React.TouchEvent) => {
+    // Prevent default to stop scrolling while playing
+    e.preventDefault(); 
+    
+    if (gameState === 'PLAYING') handleInput();
+    if (gameState === 'START' || gameState === 'GAME_OVER' || gameState === 'VICTORY') resetGame();
+  }, [gameState, handleInput]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
         // --- CRITICAL FIX FOR CHAT INPUT ---
@@ -453,7 +462,7 @@ const ReindeerGame: React.FC = () => {
              <p className="text-white/60 mt-2">Tap to fly. <span className="text-santa-gold">Collecting gifts speeds you up!</span></p>
           </div>
 
-          <div className="relative rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(253,185,49,0.2)] border-4 border-santa-dark/50 bg-gray-900">
+          <div className="relative rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(253,185,49,0.2)] border-4 border-santa-dark/50 bg-gray-900 touch-none">
              
              {/* Score Board */}
              <div className="absolute top-4 left-6 z-10 pointer-events-none">
@@ -467,16 +476,17 @@ const ReindeerGame: React.FC = () => {
                 ref={canvasRef}
                 width={800}
                 height={450}
-                className="w-full h-auto block cursor-pointer select-none"
+                className="w-full h-auto block cursor-pointer select-none touch-none"
                 onClick={() => {
                     if (gameState === 'PLAYING') handleInput();
                 }}
+                onTouchStart={handleTouch}
              />
 
              {/* UI OVERLAYS */}
              {gameState === 'START' && (
-                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20">
-                     <div className="bg-black/80 p-8 rounded-2xl border border-santa-gold/30 shadow-2xl backdrop-blur-sm transform transition-all hover:scale-105">
+                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20 pointer-events-none">
+                     <div className="bg-black/80 p-8 rounded-2xl border border-santa-gold/30 shadow-2xl backdrop-blur-sm transform transition-all hover:scale-105 pointer-events-auto">
                         <h3 className="text-4xl font-serif text-santa-gold mb-2">Ready to Fly?</h3>
                         <p className="text-white/80 mb-6">Tap to Fly.<br/>Collect gifts to go faster!</p>
                         <button 

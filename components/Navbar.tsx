@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
 
             {/* X.com Logo in Header */}
             <a 
-                href="https://x.com" 
+                href="https://x.com/ogsantacoin" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="ml-4 w-9 h-9 rounded-full bg-black flex items-center justify-center border border-white/20 hover:border-santa-gold transition-colors hover:scale-110 shadow-lg"
@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
           {/* Actions - Mobile Menu Button */}
           <div className="flex items-center gap-4 md:hidden relative z-[101]">
             <a 
-                href="https://x.com" 
+                href="https://x.com/ogsantacoin" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-black flex items-center justify-center border border-white/20"

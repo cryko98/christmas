@@ -97,7 +97,7 @@ const Hero: React.FC = () => {
                 </button>
 
                 <a 
-                    href="https://x.com" 
+                    href="https://x.com/ogsantacoin" 
                     target="_blank" 
                     rel="noreferrer" 
                     className="w-12 h-12 bg-black/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black transition-all border border-white/20 shadow-lg hover:-translate-y-1 group"

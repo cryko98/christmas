@@ -5,7 +5,7 @@ const Hero: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<CountDownTime>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [copied, setCopied] = useState(false);
   const [isLoreOpen, setIsLoreOpen] = useState(false); // State for Lore Sidebar
-  const caAddress = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+  const caAddress = "EeaGM5p2yY916w5En64eUJha3HVi3mj6pVnD5nuhbonk";
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -128,9 +128,14 @@ const Hero: React.FC = () => {
         </div>
         
         <div className="mt-20 flex flex-col md:flex-row gap-6 z-10">
-           <button className="bg-gradient-to-r from-santa-red to-santa-dark text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-glow hover:-translate-y-1 transition-all duration-300 border border-white/20 tracking-wider">
+           <a 
+             href="https://bonk.fun/token/EeaGM5p2yY916w5En64eUJha3HVi3mj6pVnD5nuhbonk"
+             target="_blank"
+             rel="noreferrer"
+             className="bg-gradient-to-r from-santa-red to-santa-dark text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-glow hover:-translate-y-1 transition-all duration-300 border border-white/20 tracking-wider flex items-center justify-center"
+           >
               BUY $SANTACOIN
-           </button>
+           </a>
            <button className="bg-white text-santa-red px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 tracking-wider">
               VIEW CHART
            </button>

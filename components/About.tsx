@@ -38,12 +38,6 @@ const About: React.FC = () => {
                     </div>
                     <span className="font-semibold text-sm uppercase tracking-wide">To The North Pole</span>
                  </div>
-                 <div className="flex items-center gap-3 text-white">
-                    <div className="w-10 h-10 rounded-full bg-santa-gold flex items-center justify-center text-black shadow-lg">
-                       <i className="fa-solid fa-gift"></i>
-                    </div>
-                    <span className="font-semibold text-sm uppercase tracking-wide">Community Rewards</span>
-                 </div>
               </div>
             </div>
 

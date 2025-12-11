@@ -4,6 +4,7 @@ import { CountDownTime } from '../types';
 const Hero: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<CountDownTime>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [copied, setCopied] = useState(false);
+  const [isLoreOpen, setIsLoreOpen] = useState(false); // State for Lore Sidebar
   const caAddress = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
   useEffect(() => {
@@ -43,6 +44,61 @@ const Hero: React.FC = () => {
   return (
     <section id="countdown" className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-4 text-center overflow-hidden">
       
+      {/* --- LORE SIDEBAR --- */}
+      <div className="fixed left-0 top-1/3 z-[80] flex items-start">
+        
+        {/* The Panel (Content) */}
+        <div 
+            className={`bg-black/90 backdrop-blur-xl border-y border-r border-santa-gold/30 rounded-r-2xl p-6 w-[300px] sm:w-[350px] shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-in-out origin-left h-auto max-h-[60vh] overflow-y-auto custom-scrollbar text-left ${
+                isLoreOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+        >
+            <div className="flex items-center gap-3 mb-4 border-b border-white/10 pb-3">
+                <i className="fa-solid fa-scroll text-santa-gold text-2xl"></i>
+                <h3 className="text-xl font-serif font-bold text-white">Origin Story</h3>
+            </div>
+            
+            <ul className="space-y-4 text-sm text-gray-300 font-light leading-relaxed list-none">
+                <li className="flex gap-3">
+                    <span className="text-santa-gold mt-1">✦</span>
+                    <span>Santacoin was created <strong>January 12, 2014</strong> during a Reddit altcoin-creation contest.</span>
+                </li>
+                <li className="flex gap-3">
+                    <span className="text-santa-gold mt-1">✦</span>
+                    <span>It was introduced publicly on Bitcointalk on <strong>May 25, 2014</strong>.</span>
+                </li>
+                <li className="flex gap-3">
+                    <span className="text-santa-gold mt-1">✦</span>
+                    <span>Built on Bitcoin with <strong>Scrypt-Adaptive-Nfactor</strong> mining for added security.</span>
+                </li>
+                <li className="flex gap-3">
+                    <span className="text-santa-gold mt-1">✦</span>
+                    <span>Launched with a <strong>10% premine</strong> and low coin-generation rate.</span>
+                </li>
+                <li className="flex gap-3">
+                    <span className="text-santa-gold mt-1">✦</span>
+                    <span>A third version launched <strong>December 9, 2014</strong>, listed on 40+ exchanges, peak market cap over <strong>$3.2M</strong>.</span>
+                </li>
+            </ul>
+        </div>
+
+        {/* The Toggle Button */}
+        <button
+            onClick={() => setIsLoreOpen(!isLoreOpen)}
+            className={`group bg-gradient-to-b from-santa-red to-[#8B0000] text-white py-6 px-2 rounded-r-xl border-y border-r border-santa-gold/50 shadow-lg hover:brightness-110 transition-all duration-300 flex flex-col items-center justify-center gap-2 transform ${
+                isLoreOpen ? 'translate-x-0' : '-translate-x-[1px]' // Slight overlap fix
+            }`}
+            style={{ writingMode: 'vertical-rl' }}
+        >
+            <span className="text-santa-gold text-xs font-bold tracking-[0.2em] uppercase transform rotate-180 whitespace-nowrap">
+                {isLoreOpen ? 'Close Info' : 'Lore'}
+            </span>
+            <i className={`fa-solid ${isLoreOpen ? 'fa-chevron-left' : 'fa-book-open'} text-sm mt-2 transition-transform ${isLoreOpen ? '' : 'animate-pulse'}`}></i>
+        </button>
+
+      </div>
+      {/* --- END LORE SIDEBAR --- */}
+
       <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
         
         <div className="mb-6 animate-float">

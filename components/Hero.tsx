@@ -136,9 +136,14 @@ const Hero: React.FC = () => {
            >
               BUY $SANTACOIN
            </a>
-           <button className="bg-white text-santa-red px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 tracking-wider">
+           <a
+             href="https://dexscreener.com/solana/7a8pyyuey1obvt9ftzbj5oxvy7qjpnfcrima9cnkmhm"
+             target="_blank"
+             rel="noreferrer" 
+             className="bg-white text-santa-red px-10 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 tracking-wider flex items-center justify-center"
+           >
               VIEW CHART
-           </button>
+           </a>
         </div>
 
         {/* Socials & Contract Address */}

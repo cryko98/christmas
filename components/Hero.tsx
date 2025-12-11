@@ -45,14 +45,15 @@ const Hero: React.FC = () => {
     <section id="countdown" className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-4 text-center overflow-hidden">
       
       {/* --- LORE SIDEBAR --- */}
-      <div className="fixed left-0 top-1/3 z-[80] flex items-start">
+      {/* Container shifts left/right based on state. The button rides along with it. */}
+      <div 
+        className={`fixed top-1/3 left-0 z-[80] flex items-start transition-transform duration-500 ease-in-out ${
+            isLoreOpen ? 'translate-x-0' : '-translate-x-[300px] sm:-translate-x-[350px]'
+        }`}
+      >
         
         {/* The Panel (Content) */}
-        <div 
-            className={`bg-black/90 backdrop-blur-xl border-y border-r border-santa-gold/30 rounded-r-2xl p-6 w-[300px] sm:w-[350px] shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-in-out origin-left h-auto max-h-[60vh] overflow-y-auto custom-scrollbar text-left ${
-                isLoreOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
-        >
+        <div className="bg-black/90 backdrop-blur-xl border-y border-r border-santa-gold/30 rounded-br-2xl p-6 w-[300px] sm:w-[350px] shadow-[0_0_30px_rgba(0,0,0,0.5)] h-auto max-h-[60vh] overflow-y-auto custom-scrollbar text-left relative">
             <div className="flex items-center gap-3 mb-4 border-b border-white/10 pb-3">
                 <i className="fa-solid fa-scroll text-santa-gold text-2xl"></i>
                 <h3 className="text-xl font-serif font-bold text-white">Origin Story</h3>
@@ -82,16 +83,14 @@ const Hero: React.FC = () => {
             </ul>
         </div>
 
-        {/* The Toggle Button */}
+        {/* The Toggle Button - Attached to the right side of the panel */}
         <button
             onClick={() => setIsLoreOpen(!isLoreOpen)}
-            className={`group bg-gradient-to-b from-santa-red to-[#8B0000] text-white py-6 px-2 rounded-r-xl border-y border-r border-santa-gold/50 shadow-lg hover:brightness-110 transition-all duration-300 flex flex-col items-center justify-center gap-2 transform ${
-                isLoreOpen ? 'translate-x-0' : '-translate-x-[1px]' // Slight overlap fix
-            }`}
+            className="group bg-gradient-to-b from-santa-red to-[#8B0000] text-white py-6 px-2 rounded-r-xl border-y border-r border-santa-gold/50 shadow-lg hover:brightness-110 transition-all duration-300 flex flex-col items-center justify-center gap-2 -ml-[1px]"
             style={{ writingMode: 'vertical-rl' }}
         >
             <span className="text-santa-gold text-xs font-bold tracking-[0.2em] uppercase transform rotate-180 whitespace-nowrap">
-                {isLoreOpen ? 'Close Info' : 'Lore'}
+                {isLoreOpen ? 'Close' : 'Lore'}
             </span>
             <i className={`fa-solid ${isLoreOpen ? 'fa-chevron-left' : 'fa-book-open'} text-sm mt-2 transition-transform ${isLoreOpen ? '' : 'animate-pulse'}`}></i>
         </button>
